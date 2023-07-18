@@ -16,6 +16,8 @@ const metadata = {
 export default function RootLayout({ children }) {
   const [navbar, setNavbar] = useState(false);
 
+  const data = new Date();
+
   return (
     <html lang="en">
       <body className={inter.className}>
@@ -79,7 +81,18 @@ export default function RootLayout({ children }) {
           </div>
         </nav>
         <div className="container px-6 mx-auto sm:container sm:px-20 md:mx-auto md:px-20 lg:px-20 lg:mx-auto">
+          <div>
+            <img src={`./slide-home.jpg`} />
+          </div>
           {children}
+          <footer className="rounded-lg shadow mb-5 mt-5 bg-gray-600">
+            <div className="w-full mx-auto max-w-screen-xl p-4 md:flex md:items-center md:justify-between">
+              <span className="text-sm text-gray-500 sm:text-center dark:text-gray-400">
+                © {data.getFullYear()} VinhoBr™ City Center Outlet . All Rights
+                Reserved.
+              </span>
+            </div>
+          </footer>
         </div>
       </body>
     </html>
