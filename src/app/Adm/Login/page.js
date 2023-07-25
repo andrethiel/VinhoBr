@@ -11,7 +11,7 @@ export default function Login() {
 
   async function Entrar() {
     const response = await axios.post(
-      "https://andrethiel-001-site1.btempurl.com/api/v1/usuario/login",
+      "http://andrethiel-001-site1.btempurl.com/api/v1/usuario/login",
       {
         Email: usuario.value,
         Senha: "486520@123Adt",
