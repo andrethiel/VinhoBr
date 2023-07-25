@@ -1,6 +1,25 @@
+"use client";
+import Botao from "@/app/Components/Botao";
+import TextBox from "@/app/Components/Input";
+import usuarioForm from "@/app/Data/usuario";
 import { UserCircleIcon, LockClosedIcon } from "@heroicons/react/24/outline";
+import axios from "axios";
 
 export default function Login() {
+  const usuario = usuarioForm();
+  const senha = usuarioForm("password");
+
+  async function Entrar() {
+    const response = await axios.post(
+      "http://andrethiel-001-site1.btempurl.com/api/v1/usuario/login",
+      {
+        Email: usuario.value,
+        Senha: "486520@123Adt",
+      }
+    );
+    console.log(response);
+  }
+
   return (
     <section className="h-screen">
       <div className="container h-full py-24">
@@ -21,23 +40,24 @@ export default function Login() {
             </div>
             <form className="flex flex-col gap-10">
               <div className="flex">
-                <span class="inline-flex items-center px-3 text-sm border border-r-0 rounded-l-md">
-                  <UserCircleIcon className="h-6 w-6" aria-hidden="true" />
-                </span>
-                <input
-                  type="text"
-                  class="rounded-none border rounded-r-lg block flex-1 min-w-0 w-full text-sm p-2.5"
+                <TextBox
                   placeholder="Usuário"
+                  icone={
+                    <UserCircleIcon className="h-6 w-6" aria-hidden="true" />
+                  }
+                  {...usuario}
+                  required
                 />
               </div>
               <div className="flex">
-                <span class="inline-flex items-center px-3 text-sm border border-r-0 rounded-l-md">
-                  <LockClosedIcon className="h-6 w-6" aria-hidden="true" />
-                </span>
-                <input
+                <TextBox
                   type="password"
                   placeholder="Senha"
-                  class="rounded-none border rounded-r-lg block flex-1 min-w-0 w-full text-sm p-2.5"
+                  icone={
+                    <LockClosedIcon className="h-6 w-6" aria-hidden="true" />
+                  }
+                  {...senha}
+                  required
                 />
               </div>
 
@@ -48,19 +68,13 @@ export default function Login() {
                     type="checkbox"
                     value=""
                     class="w-4 h-4 border"
-                    required
                   />
                 </div>
                 <label for="remember" class="ml-2 text-sm font-medium">
                   Lembrar Senha
                 </label>
               </div>
-              <button
-                type="submit"
-                class="text-white font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center border-[#d7006e] bg-[#d7006e]"
-              >
-                Entrar
-              </button>
+              <Botao onClick={() => Entrar()}>Entrar</Botao>
             </form>
           </div>
         </div>
