@@ -1,3 +1,3 @@
-export default function CadsatroDegustacao() {
-  return <h1>degustaç~cao</h1>;
+export default function Degustacao() {
+  return <h1>SSSS</h1>;
 }

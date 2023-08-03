@@ -1,12 +1,27 @@
-export default function Card({ tipo, texto, href, image }) {
+export default function Card({ tipo, texto, href, image, preco, onClick }) {
   if (tipo == "Paises") {
-    return (
-      <a href="#">
-        <img
-          className="w-16 h-16 mb-3 rounded-full shadow-lg"
-          src="https://bandeira.net/wp-content/uploads/2018/10/bandeira-de-portugal-1.png"
-        />
-      </a>
+    return image == "" ? (
+      <div className="flex flex-col items-center">
+        <button onClick={onClick}>
+          <img
+            className="w-14 h-14 mb-3 rounded-full shadow-lg"
+            style={{ maxWidth: "4rem" }}
+            src="../garrafa.svg"
+          />
+        </button>
+        <span>Todos os vinho</span>
+      </div>
+    ) : (
+      <div className="flex flex-col items-center">
+        <button onClick={onClick}>
+          <img
+            className="w-14 h-14 mb-3 rounded-full shadow-lg"
+            style={{ maxWidth: "4rem" }}
+            src={"https://flagcdn.com/" + image + ".svg"}
+          />
+        </button>
+        <span>{texto}</span>
+      </div>
     );
   }
 
@@ -73,21 +88,22 @@ export default function Card({ tipo, texto, href, image }) {
 
   return (
     <div className="w-full max-w-sm rounded-lg bg-gray-600">
-      <div>
+      <div className="flex justify-center">
         <img
-          src="https://www.vinhobr.com.br/produtos/alta_vista_atemporal_blend_2020_vinhobr.webp"
+          src={image}
+          width="384px"
+          height="330px"
+          style={{ height: "330px" }}
           alt=""
         />
       </div>
       <div className="px-5 pb-5 py-5">
-        <a href="#">
-          <h5 className="text-xl font-semibold tracking-tight text-white">
-            Alta Vista Atemporal Blend Vinho Argentino.
-          </h5>
-        </a>
+        <h5 className="text-xl font-semibold tracking-tight text-white">
+          {texto}
+        </h5>
         <div className="flex items-center mt-2.5 mb-5" />
         <div className="flex items-center justify-between">
-          <span className="text-3xl font-bold text-white">R$ 133,22</span>
+          <span className="text-3xl font-bold text-white">{preco}</span>
         </div>
       </div>
     </div>

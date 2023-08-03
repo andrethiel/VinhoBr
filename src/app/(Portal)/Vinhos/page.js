@@ -1,7 +1,42 @@
-import React from "react";
+"use client";
+import React, { useEffect, useRef, useState } from "react";
 import Card from "../../Components/Card";
+import { VINHO_LISTAR_TUDO, VINHO_POR_PAIS } from "@/app/Api";
+import { motion } from "framer-motion";
+import paises from "@/app/Constains/Paises";
 
 export default function Vinhos() {
+  useEffect(() => {
+    Listar();
+  }, []);
+
+  useEffect(() => {
+    setWidth(carousel.current?.scrollWidth - carousel.current?.offsetWidth);
+  }, []);
+
+  const carousel = useRef();
+  const [width, setWidth] = useState(0);
+  const [dados, setDados] = useState([]);
+
+  async function Listar() {
+    const response = await VINHO_LISTAR_TUDO();
+
+    if (response.sucesso) {
+      setDados(response.dados);
+    }
+  }
+
+  async function ListarPorPais(pais) {
+    setDados([]);
+    if (pais == "Selecione um Pais") {
+      Listar();
+    }
+    const response = await VINHO_POR_PAIS(pais);
+    if (response.sucesso) {
+      setDados(response.dados);
+    }
+  }
+
   return (
     <div>
       <div className="flex justify-center items-center p-10">
@@ -9,11 +44,55 @@ export default function Vinhos() {
           Nossos vinhos são escolhidos com o maior cuidado
         </h1>
       </div>
-      <div className="grid grid-cols-4 lg:grid-cols-10 gap-2 mb-10 lg:mb-20">
-        <Card tipo="Paises" />
+      <div className="flex justify-center items-center p-5">
+        <span className="text-sm font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6x">
+          Esolha seus vinho por pais
+        </span>
+      </div>
+      <div className="flex items-center justify-center mb-5">
+        <motion.div
+          className="cursor-grab overflow-hidden"
+          whileTap={{ cursor: "grabbing" }}
+          ref={carousel}
+        >
+          <motion.div
+            className="flex gap-10"
+            drag="x"
+            dragConstraints={{ right: 0, left: -width }}
+          >
+            {paises.map((item) => (
+              <Card
+                tipo="Paises"
+                image={item.Sigla}
+                texto={item.Pais}
+                onClick={() => ListarPorPais(item.Pais)}
+              />
+            ))}
+          </motion.div>
+        </motion.div>
+      </div>
+      <div className="flex justify-center items-center pb-14">
+        <span className="text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6x">
+          Conheça nosso vinhos
+        </span>
       </div>
       <div className="grid lg:grid-cols-3 gap-20">
-        <Card />
+        {dados.length > 0 ? (
+          dados.map((item) => (
+            <Card
+              image={item.urlImagem}
+              preco={item.preco.toLocaleString("pt-br", {
+                style: "currency",
+                currency: "BRL",
+              })}
+              texto={item.nomeVinho}
+            />
+          ))
+        ) : (
+          <span className="text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6x">
+            Nenhum vinho encontrado
+          </span>
+        )}
       </div>
     </div>
   );

@@ -6,14 +6,14 @@ export default function Principal() {
       <Card
         tipo="adm"
         image="../garrafa.svg"
-        texto="Cadastrar vinhos"
-        href="Cadastro/Vinhos"
+        texto="Vinhos"
+        href="Listar/Vinhos"
       />
       <Card
         tipo="adm"
         image="../taca.svg"
         texto="Degustação"
-        href="Cadastro/Degustacao"
+        href="Listar/Degustacao"
       />
     </div>
   );
