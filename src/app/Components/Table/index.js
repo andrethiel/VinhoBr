@@ -3,7 +3,6 @@ import { useState } from "react";
 import Botao from "../Botao";
 import ReactPaginate from "react-paginate";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
-import currency from "currency.js";
 
 export default function Tabela({ titulo, body, itemsPerPage }) {
   const [itemOffset, setItemOffset] = useState(0);
