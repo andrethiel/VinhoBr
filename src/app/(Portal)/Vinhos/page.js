@@ -3,7 +3,6 @@ import React, { useEffect, useRef, useState } from "react";
 import Card from "../../Components/Card";
 import { VINHO_LISTAR_TUDO, VINHO_POR_PAIS } from "@/app/Api";
 import { motion } from "framer-motion";
-import paises from "@/app/Constains/Paises";
 
 export default function Vinhos() {
   useEffect(() => {
@@ -17,18 +16,20 @@ export default function Vinhos() {
   const carousel = useRef();
   const [width, setWidth] = useState(0);
   const [dados, setDados] = useState([]);
+  const [paises, setPaises] = useState([]);
 
   async function Listar() {
     const response = await VINHO_LISTAR_TUDO();
 
     if (response.sucesso) {
       setDados(response.dados);
+      setPaises(response.paises);
     }
   }
 
   async function ListarPorPais(pais) {
     setDados([]);
-    if (pais == "Selecione um Pais") {
+    if (pais == 0) {
       Listar();
     }
     const response = await VINHO_POR_PAIS(pais);
@@ -60,12 +61,13 @@ export default function Vinhos() {
             drag="x"
             dragConstraints={{ right: 0, left: -width }}
           >
+            <Card tipo="Paises" image="" onClick={() => ListarPorPais(0)} />
             {paises.map((item) => (
               <Card
                 tipo="Paises"
-                image={item.Sigla}
-                texto={item.Pais}
-                onClick={() => ListarPorPais(item.Pais)}
+                image={item.sigra}
+                texto={item.nome}
+                onClick={() => ListarPorPais(item.id)}
               />
             ))}
           </motion.div>

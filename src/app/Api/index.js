@@ -164,3 +164,11 @@ export async function VINHO_POR_PAIS(pais) {
 
   return response.data;
 }
+
+export async function PAISES_LISTAR() {
+  const response = await axios.get(
+    "https://andrethiel-001-site1.btempurl.com/api/v1/paises/listar"
+  );
+
+  return response.data;
+}

@@ -16,11 +16,13 @@ export default function CadsatroVinhos() {
       const response = await VINHO_LISTAR_TUDO();
       if (response.sucesso) {
         setDados(response.dados);
+        setPaises(response.paises);
       }
     }
   }, []);
   const titulo = ["Nome Vinho", "Preço", "Pais"];
   const [dados, setDados] = useState([]);
+  const [paises, setPaises] = useState([]);
   const [nome, setNome] = useState(null);
   const [pais, setPais] = useState(null);
 
@@ -43,7 +45,11 @@ export default function CadsatroVinhos() {
             onChange={(e) => setNome(e.target.value)}
             value={nome}
           />
-          <Dropdonw onChange={(e) => setPais(e.target.value)} value={pais} />
+          <Dropdonw
+            onChange={(e) => setPais(e.target.value)}
+            value={pais}
+            paises={paises}
+          />
           <div>
             <Botao onClick={Pesquisar}>Filtrar</Botao>
           </div>

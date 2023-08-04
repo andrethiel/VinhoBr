@@ -1,5 +1,10 @@
 "use client";
-import { VINHO_INSERIR, VINHO_BUSCAR_GUID, EDITAR_VINHO } from "@/app/Api";
+import {
+  VINHO_INSERIR,
+  VINHO_BUSCAR_GUID,
+  EDITAR_VINHO,
+  PAISES_LISTAR,
+} from "@/app/Api";
 import Botao from "@/app/Components/Botao";
 import TextBox from "@/app/Components/Input";
 import Dropdonw from "@/app/Components/Select";
@@ -15,8 +20,16 @@ export default function Vinhos() {
     if (param.get("Guid") != null) {
       BuscarGuid();
     }
+    listar();
   }, []);
 
+  async function listar() {
+    const response = await PAISES_LISTAR();
+    if (response.sucesso) {
+      setPaises(response.dados);
+    }
+  }
+  const [paises, setPaises] = useState([]);
   const [imagem, setImagem] = useState();
   const [errors, setErrors] = useState([]);
 
@@ -85,6 +98,7 @@ export default function Vinhos() {
         <Dropdonw
           onChange={(e) => pais.setValue(e.target.value)}
           value={pais.value}
+          paises={paises}
         />
         <TextBox placeholder="Url Imagem" {...url} />
         <TextBox
