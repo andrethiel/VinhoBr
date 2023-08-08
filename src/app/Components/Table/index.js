@@ -1,6 +1,5 @@
 "use client";
 import { useState } from "react";
-import Botao from "../Botao";
 import ReactPaginate from "react-paginate";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
 
@@ -8,15 +7,11 @@ export default function Tabela({ titulo, body, itemsPerPage }) {
   const [itemOffset, setItemOffset] = useState(0);
 
   const endOffset = itemOffset + itemsPerPage;
-  console.log(`Loading items from ${itemOffset} to ${endOffset}`);
   const currentItems = body.slice(itemOffset, endOffset);
   const pageCount = Math.ceil(body.length / itemsPerPage);
 
   const handlePageClick = (event) => {
     const newOffset = (event.selected * itemsPerPage) % body.length;
-    console.log(
-      `User requested page number ${event.selected}, which is offset ${newOffset}`
-    );
     setItemOffset(newOffset);
   };
 
@@ -36,28 +31,62 @@ export default function Tabela({ titulo, body, itemsPerPage }) {
           </tr>
         </thead>
         <tbody className="text-base bg-gray-300">
-          {currentItems.map((item) => (
-            <tr className="border-b">
-              <th scope="row" className="px-6 py-4 whitespace-nowrap">
-                {item.nomeVinho}
-              </th>
-              <th class="px-6 py-4">
-                {item.preco.toLocaleString("pt-br", {
-                  style: "currency",
-                  currency: "BRL",
-                })}
-              </th>
-              <th class="px-6 py-4">{item.pais}</th>
-              <th class="px-6 py-4">
-                <a
-                  href={`/Adm/Cadastro/Vinhos?Guid=${item.guid}`}
-                  className="text-white font-medium rounded-lg text-md w-full sm:w-auto px-5 py-2.5 text-center border-[#d7006e] bg-[#d7006e]"
-                >
-                  Editar
-                </a>
-              </th>
-            </tr>
-          ))}
+          {currentItems.map((item) =>
+            typeof item.preco != "undefined" ? (
+              <tr className="border-b">
+                <th scope="row" className="px-6 py-4 whitespace-nowrap">
+                  {item.nomeVinho}
+                </th>
+                <th class="px-6 py-4">
+                  {item.preco.toLocaleString("pt-br", {
+                    style: "currency",
+                    currency: "BRL",
+                  })}
+                </th>
+                <th class="px-6 py-4">{item.pais}</th>
+                <th class="px-6 py-4">
+                  <a
+                    href={`/Adm/Cadastro/Vinhos?Guid=${item.guid}`}
+                    className="text-white font-medium rounded-lg text-md w-full sm:w-auto px-5 py-2.5 text-center border-[#d7006e] bg-[#d7006e]"
+                  >
+                    Editar
+                  </a>
+                </th>
+              </tr>
+            ) : (
+              <tr className="border-b">
+                <th scope="row" className="px-6 py-4 whitespace-nowrap">
+                  {item.nomeVinho}
+                </th>
+                <th class="px-6 py-4">
+                  {item.valor25.toLocaleString("pt-br", {
+                    style: "currency",
+                    currency: "BRL",
+                  })}
+                </th>
+                <th class="px-6 py-4">
+                  {item.valor50.toLocaleString("pt-br", {
+                    style: "currency",
+                    currency: "BRL",
+                  })}
+                </th>
+                <th class="px-6 py-4">
+                  {item.valor125.toLocaleString("pt-br", {
+                    style: "currency",
+                    currency: "BRL",
+                  })}
+                </th>
+                <th class="px-6 py-4">
+                  <a
+                    href={`/Adm/Cadastro/Degustacao?Guid=${item.guid}`}
+                    className="text-white font-medium rounded-lg text-md w-full sm:w-auto px-5 py-2.5 text-center border-[#d7006e] bg-[#d7006e]"
+                  >
+                    Editar
+                  </a>
+                </th>
+              </tr>
+            )
+          )}
         </tbody>
       </table>
       <div className="flex justify-end">

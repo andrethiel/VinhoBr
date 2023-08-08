@@ -10,7 +10,7 @@ import { useEffect, useState } from "react";
 
 export default function Login() {
   const usuario = usuarioForm();
-  const senha = usuarioForm("password");
+  const senha = usuarioForm();
   const [salvaSenha, SetsalvaSenha] = useState(false);
   const [errors, setErrors] = useState([]);
 

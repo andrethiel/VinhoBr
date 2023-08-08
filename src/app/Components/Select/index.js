@@ -4,6 +4,7 @@ export default function Dropdonw({
   onBlur,
   error,
   paises,
+  dados,
   ...res
 }) {
   return (
@@ -14,10 +15,21 @@ export default function Dropdonw({
       onBlur={onBlur}
       {...res}
     >
-      <option value="">Selecione um Pais</option>
-      {paises.map((item) => (
-        <option value={item.sigla}>{item.nome}</option>
-      ))}
+      {dados != null ? (
+        <>
+          <option value="">Selecione um vinho</option>
+          {dados.map((item) => (
+            <option value={item.id}>{item.nomeVinho}</option>
+          ))}
+        </>
+      ) : (
+        <>
+          <option value="">Selecione um Item</option>
+          {paises.map((item) => (
+            <option value={item.sigla}>{item.nome}</option>
+          ))}
+        </>
+      )}
     </select>
   );
 }

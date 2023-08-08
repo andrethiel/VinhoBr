@@ -1,4 +1,14 @@
-export default function Card({ tipo, texto, href, image, preco, onClick }) {
+export default function Card({
+  tipo,
+  texto,
+  href,
+  image,
+  preco,
+  valor25,
+  valor50,
+  valor125,
+  onClick,
+}) {
   if (tipo == "Paises") {
     return image == "" ? (
       <div className="flex flex-col items-center">
@@ -27,31 +37,49 @@ export default function Card({ tipo, texto, href, image, preco, onClick }) {
 
   if (tipo == "Degustação") {
     return (
-      <div className="w-full max-w-sm rounded-lg bg-gray-600">
+      <div className="w-72 max-w-sm rounded-lg bg-gray-600">
         <div>
           <img
-            src="https://www.vinhobr.com.br/produtos/alta_vista_atemporal_blend_2020_vinhobr.webp"
+            src={image}
             alt=""
+            width="384px"
+            height="330px"
+            style={{ height: "330px" }}
           />
         </div>
         <div className="px-5 pb-5 py-5">
           <h5 className="text-xl font-semibold tracking-tight text-white">
-            Alta Vista Atemporal Blend Vinho Argentino.
+            {texto}
           </h5>
           <div className="flex items-center mt-2.5 mb-5" />
-          <div className="grid-cols-4">
+          <div className="grid-cols-3">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-white">25 ml</p>
-                <span className="text-sm text-white">R$ 10,00</span>
+                <span className="text-sm text-white">
+                  {valor25.toLocaleString("pt-br", {
+                    style: "currency",
+                    currency: "BRL",
+                  })}
+                </span>
               </div>
               <div>
                 <p className="text-sm text-white">50 ml</p>
-                <span className="text-sm text-white">R$ 20,00</span>
+                <span className="text-sm text-white">
+                  {valor50.toLocaleString("pt-br", {
+                    style: "currency",
+                    currency: "BRL",
+                  })}
+                </span>
               </div>
               <div>
                 <p className="text-sm text-white">125 ml</p>
-                <span className="text-sm text-white">R$ 40,00</span>
+                <span className="text-sm text-white">
+                  {valor125.toLocaleString("pt-br", {
+                    style: "currency",
+                    currency: "BRL",
+                  })}
+                </span>
               </div>
             </div>
           </div>
@@ -63,8 +91,8 @@ export default function Card({ tipo, texto, href, image, preco, onClick }) {
     return (
       <a href={href}>
         <div
-          className="rounded-lg bg-gray-600 flex flex-col items-center justify-center"
-          style={{ width: "348px", height: "428px" }}
+          className="rounded-lg bg-gray-600 flex flex-col items-center justify-center lg:w-80"
+          // style={{ width: "348px", height: "428px" }}
         >
           <div>
             <img
