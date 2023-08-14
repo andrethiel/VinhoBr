@@ -257,7 +257,7 @@ export async function DEGUSTACAO_LISTAR_PORTAL() {
 export async function PORTAL_LISTAR() {
   const token = sessionStorage.getItem("accessToken");
   const response = await axios.get(
-    "https://localhost:44389/api/v1/portal/listar",
+    "https://andrethiel-001-site1.btempurl.com/api/v1/portal/listar",
     {
       headers: {
         Authorization: "Bearer " + token,
@@ -271,7 +271,7 @@ export async function PORTAL_LISTAR() {
 export async function PORTAL_BUSCAR_GUID(guid) {
   const token = sessionStorage.getItem("accessToken");
   const response = await axios.get(
-    "https://localhost:44389/api/v1/portal/BuscarGuid?Guid=" + guid,
+    "https://andrethiel-001-site1.btempurl.com/api/v1/portal/BuscarGuid?Guid=" + guid,
     {
       headers: {
         Authorization: "Bearer " + token,
@@ -301,7 +301,7 @@ export async function PORTAL_INSERIR(
   console.log(form);
   const token = sessionStorage.getItem("accessToken");
   const response = await axios.post(
-    "https://localhost:44389/api/v1/portal/inserir",
+    "https://andrethiel-001-site1.btempurl.com/api/v1/portal/inserir",
     form,
     {
       headers: {
@@ -315,7 +315,7 @@ export async function PORTAL_INSERIR(
 
 export async function PORTAL_LISTAR_PORTAL() {
   const response = await axios.get(
-    "https://localhost:44389/api/v1/portal/listarportal"
+    "https://andrethiel-001-site1.btempurl.com/api/v1/portal/listarportal"
   );
 
   return response.data;
