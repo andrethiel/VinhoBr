@@ -12,6 +12,7 @@ import cadastroForm from "@/app/Data/cadastro";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import Alerta from "@/app/Components/Alerta";
+import { Loading } from "@/app/Components/Loading";
 
 export default function Vinhos() {
   const param = useSearchParams();
@@ -24,10 +25,12 @@ export default function Vinhos() {
   }, []);
 
   async function listar() {
+    setLoading(true);
     const response = await PAISES_LISTAR();
     if (response.sucesso) {
       setPaises(response.dados);
     }
+    setLoading(false);
   }
   const [paises, setPaises] = useState([]);
   const [imagem, setImagem] = useState();
@@ -42,6 +45,7 @@ export default function Vinhos() {
 
   async function inserir() {
     if (nome.valida() && pais.valida()) {
+      setLoading(true);
       if (param.get("Guid") != null) {
         const response = await EDITAR_VINHO(
           id.value,
@@ -69,18 +73,27 @@ export default function Vinhos() {
           window.location.href = "/Adm/Listar/Vinhos";
         }, 3000);
       }
+      setLoading(false);
     }
   }
 
   async function BuscarGuid() {
+    setLoading(true);
     const response = await VINHO_BUSCAR_GUID(param.get("Guid"));
-    id.setValue(response.id);
-    guid.setValue(response.guid);
-    nome.setValue(response.nomeVinho);
-    valor.setValue(response.preco + ",00");
-    pais.setValue(response.pais);
-    url.setValue(response.urlImagem);
+    if (response.sucesso) {
+      id.setValue(response.id);
+      guid.setValue(response.guid);
+      nome.setValue(response.nomeVinho);
+      valor.setValue(response.preco);
+      pais.setValue(response.pais);
+      url.setValue(response.urlImagem);
+    }
+    setLoading(false);
   }
+
+  const [loading, setLoading] = useState(false);
+
+  if (loading) return <Loading start={true} />;
 
   return (
     <div>
@@ -89,8 +102,6 @@ export default function Vinhos() {
           {param.get("Guid") != null ? "Editar Vinho" : "Cadastro de Vinhos"}
         </span>
       </div>
-      <TextBox type="hidden" {...id} />
-      <TextBox type="hidden" {...guid} />
       {errors.length > 0 && <Alerta>{errors[0]}</Alerta>}
       <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 mt-10 mb-10 gap-5">
         <TextBox placeholder="Nome do vinho" {...nome} />

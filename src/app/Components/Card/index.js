@@ -37,7 +37,7 @@ export default function Card({
 
   if (tipo == "Degustação") {
     return (
-      <div className="w-72 max-w-sm rounded-lg bg-gray-600">
+      <div className="w-full max-w-sm rounded-lg bg-gray-600">
         <div>
           <img
             src={image}
@@ -94,13 +94,12 @@ export default function Card({
           className="rounded-lg bg-gray-600 flex flex-col items-center justify-center lg:w-80"
           // style={{ width: "348px", height: "428px" }}
         >
-          <div>
+          <div className="flex items-center justify-center">
             <img
               src={image}
               alt=""
-              width="174px"
-              height="261px"
-              style={{ height: "261px" }}
+              width={`${texto != "Portal" ? "150px" : "200px"}`}
+              style={{ height: "250px" }}
             />
           </div>
 

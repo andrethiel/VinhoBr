@@ -8,6 +8,7 @@ import {
 import Alerta from "@/app/Components/Alerta";
 import Botao from "@/app/Components/Botao";
 import TextBox from "@/app/Components/Input";
+import { Loading } from "@/app/Components/Loading";
 import Dropdonw from "@/app/Components/Select";
 import cadastroForm from "@/app/Data/cadastro";
 import { useSearchParams } from "next/navigation";
@@ -26,8 +27,12 @@ export default function Degustacao() {
   }, []);
 
   async function listar() {
+    setLoading(true);
     const response = await VINHO_LISTAR_TUDO();
-    setDados(response.dados);
+    if (response.sucesso) {
+      setDados(response.dados);
+    }
+    setLoading(false);
   }
 
   async function inserir() {
@@ -37,6 +42,7 @@ export default function Degustacao() {
       valor50.valida() &&
       valor125.valida()
     ) {
+      setLoading(true);
       if (param.get("Guid") != null) {
         const response = await DEGUSTACAO_EDITAR(
           id.value,
@@ -60,6 +66,7 @@ export default function Degustacao() {
           setErros([response.message, "sucesso"]);
         }
       }
+      setLoading(false);
     }
     setTimeout(() => {
       setErros([]);
@@ -67,6 +74,7 @@ export default function Degustacao() {
   }
 
   async function BuscarGuid() {
+    setLoading(true);
     const response = await DEGUSTACAO_BUSCAR_GUID(param.get("Guid"));
     if (response.sucesso) {
       id.setValue(response.dados.id);
@@ -91,6 +99,7 @@ export default function Degustacao() {
         })
       );
     }
+    setLoading(false);
   }
 
   function validar() {
@@ -110,6 +119,10 @@ export default function Degustacao() {
   const valor25 = cadastroForm();
   const valor50 = cadastroForm();
   const valor125 = cadastroForm();
+
+  const [loading, setLoading] = useState(false);
+
+  if (loading) return <Loading start={true} />;
 
   return (
     <div>

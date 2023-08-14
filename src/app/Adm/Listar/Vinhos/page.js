@@ -2,6 +2,7 @@
 import { VINHO_FILTRAR, VINHO_LISTAR_TUDO } from "@/app/Api";
 import Botao from "@/app/Components/Botao";
 import TextBox from "@/app/Components/Input";
+import { Loading } from "@/app/Components/Loading";
 import Dropdonw from "@/app/Components/Select";
 import Tabela from "@/app/Components/Table";
 import cadastroForm from "@/app/Data/cadastro";
@@ -13,11 +14,13 @@ export default function CadsatroVinhos() {
       listar();
     }
     async function listar() {
+      setLoading(true);
       const response = await VINHO_LISTAR_TUDO();
       if (response.sucesso) {
         setDados(response.dados);
         setPaises(response.paises);
       }
+      setLoading(false);
     }
   }, []);
   const titulo = ["Nome Vinho", "Preço", "Pais"];
@@ -27,12 +30,16 @@ export default function CadsatroVinhos() {
   const [pais, setPais] = useState(null);
 
   async function Pesquisar() {
+    setLoading(true);
     const response = await VINHO_FILTRAR(nome, pais);
     if (response.sucesso) {
       setDados(response.dados);
     }
+    setLoading(false);
   }
+  const [loading, setLoading] = useState(false);
 
+  if (loading) return <Loading start={true} />;
   return (
     <>
       <div>

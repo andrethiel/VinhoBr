@@ -3,6 +3,7 @@ import React, { useEffect, useRef, useState } from "react";
 import Card from "../../Components/Card";
 import { VINHO_LISTAR_TUDO, VINHO_POR_PAIS } from "@/app/Api";
 import { motion } from "framer-motion";
+import { Loading } from "@/app/Components/Loading";
 
 export default function Vinhos() {
   useEffect(() => {
@@ -19,15 +20,18 @@ export default function Vinhos() {
   const [paises, setPaises] = useState([]);
 
   async function Listar() {
+    setLoading(true);
     const response = await VINHO_LISTAR_TUDO();
 
     if (response.sucesso) {
       setDados(response.dados);
       setPaises(response.paises);
     }
+    setLoading(false);
   }
 
   async function ListarPorPais(pais) {
+    setLoading(true);
     setDados([]);
     if (pais == 0) {
       Listar();
@@ -36,7 +40,12 @@ export default function Vinhos() {
     if (response.sucesso) {
       setDados(response.dados);
     }
+    setLoading(false);
   }
+
+  const [loading, setLoading] = useState(false);
+
+  if (loading) return <Loading start={true} />;
 
   return (
     <div>
@@ -50,13 +59,14 @@ export default function Vinhos() {
           Esolha seus vinho por pais
         </span>
       </div>
-      <div className="flex items-center justify-center mb-5">
+      <div className="flex items-center justify-center mb-5 max-w-[350px] md:max-w-[768px] lg:max-w-[1024px] xl:max-w-[1280px] ">
         <motion.div
           className="cursor-grab overflow-hidden"
           whileTap={{ cursor: "grabbing" }}
           ref={carousel}
         >
           <motion.div
+            style={{ display: "flex" }}
             className="flex gap-10"
             drag="x"
             dragConstraints={{ right: 0, left: -width }}

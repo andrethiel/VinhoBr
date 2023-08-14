@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import Card from "../../Components/Card";
 import { DEGUSTACAO_LISTAR_PORTAL } from "@/app/Api";
+import { Loading } from "@/app/Components/Loading";
 
 export default function Degustacao() {
   useEffect(() => {
@@ -9,13 +10,19 @@ export default function Degustacao() {
   }, []);
 
   async function ListarPortal() {
+    setLoading(true);
     const response = await DEGUSTACAO_LISTAR_PORTAL();
     if (response.sucesso) {
       setDados(response.dados);
     }
+    setLoading(false);
   }
 
   const [dados, setDados] = useState([]);
+
+  const [loading, setLoading] = useState(false);
+
+  if (loading) return <Loading start={true} />;
   return (
     <div>
       <div className="flex justify-center items-center p-10">

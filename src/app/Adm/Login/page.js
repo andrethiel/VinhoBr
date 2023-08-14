@@ -3,6 +3,7 @@ import { LOGIN, REFRESH_TOKEN } from "@/app/Api";
 import Alerta from "@/app/Components/Alerta";
 import Botao from "@/app/Components/Botao";
 import TextBox from "@/app/Components/Input";
+import { Loading } from "@/app/Components/Loading";
 import usuarioForm from "@/app/Data/usuario";
 import { UserCircleIcon, LockClosedIcon } from "@heroicons/react/24/outline";
 import axios from "axios";
@@ -42,6 +43,7 @@ export default function Login() {
     localStorage.clear();
     sessionStorage.clear();
     if (usuario.valida() && senha.valida()) {
+      setLoading(true);
       const response = await LOGIN(usuario.value, senha.value);
       if (response.sucesso) {
         if (salvaSenha) {
@@ -55,15 +57,19 @@ export default function Login() {
         }
         sessionStorage.setItem("accessToken", response.accessToken);
         window.location.href = "/Adm/Cadastro";
+        setLoading(false);
       } else {
         setErrors([response.erros[0], "error"]);
       }
     }
   }
 
+  const [loading, setLoading] = useState(false);
+
+  if (loading) return <Loading start={true} />;
+
   return (
     <section className="h-screen">
-      {/* <img src="../loading.gif" /> */}
       <div className="container h-full py-24">
         <div className="g-7 flex h-full flex-wrap items-center justify-center lg:justify-between">
           <div className="mb-12 md:mb-0 md:w-8/12 lg:w-6/12">

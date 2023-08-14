@@ -66,6 +66,14 @@ export default function RootLayout({ children }) {
                 </li>
                 <li>
                   <a
+                    href="/Adm/Listar/Portal"
+                    className="block py-2 pl-3 pr-4 rounded md:bg-transparent md:p-0 text-white md:text-zinc-950 lg:text-zinc-950"
+                  >
+                    Portal
+                  </a>
+                </li>
+                <li>
+                  <a
                     href="/Adm/Listar/Vinhos"
                     className="block py-2 pl-3 pr-4 rounded md:bg-transparent md:p-0 text-white md:text-zinc-950 lg:text-zinc-950"
                   >

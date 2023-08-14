@@ -2,7 +2,7 @@ import Card from "@/app/Components/Card";
 
 export default function Principal() {
   return (
-    <div className="flex justify-center items-center flex-row h-full gap-10 mt-10">
+    <div className="flex justify-center items-center flex-col h-full gap-10 mt-10 lg:flex-row">
       <Card
         tipo="adm"
         image="../garrafa.svg"
@@ -14,6 +14,12 @@ export default function Principal() {
         image="../taca.svg"
         texto="Degustação"
         href="Listar/Degustacao"
+      />
+      <Card
+        tipo="adm"
+        image="../portal.png"
+        texto="Portal"
+        href="Listar/Portal"
       />
     </div>
   );

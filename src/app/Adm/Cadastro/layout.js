@@ -66,6 +66,14 @@ export default function RootLayout({ children }) {
                 </li>
                 <li>
                   <a
+                    href="/Adm/Listar/Portal"
+                    className="block py-2 pl-3 pr-4 rounded md:bg-transparent md:p-0 text-white md:text-zinc-950 lg:text-zinc-950"
+                  >
+                    Portal
+                  </a>
+                </li>
+                <li>
+                  <a
                     href="/Adm/Listar/Vinhos"
                     className="block py-2 pl-3 pr-4 rounded md:bg-transparent md:p-0 text-white md:text-zinc-950 lg:text-zinc-950"
                   >
@@ -87,7 +95,7 @@ export default function RootLayout({ children }) {
         <div className="container px-6 mx-auto sm:container sm:px-20 md:mx-auto md:px-20 lg:px-20 lg:mx-auto">
           {children}
         </div>
-        <footer className="bottom-0 right-0 left-0 rounded-lg absolute lg:absolute md:absolute shadow mb-5 mt-5 mx-5 bg-gray-600 md:mx-20 lg:mx-20">
+        <footer className="bottom-0 right-0 left-0 rounded-lg shadow mb-5 mt-5 mx-5 bg-gray-600 md:mx-20 lg:mx-20">
           <div className=" mx-auto max-w-screen-xl p-4 md:flex md:items-center md:justify-between">
             <span className="text-sm text-gray-500 sm:text-center dark:text-gray-400">
               © {data.getFullYear()} VinhoBr™ City Center Outlet . All Rights

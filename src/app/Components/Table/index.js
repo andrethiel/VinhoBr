@@ -53,7 +53,7 @@ export default function Tabela({ titulo, body, itemsPerPage }) {
                   </a>
                 </th>
               </tr>
-            ) : (
+            ) : typeof item.valor25 != "undefined" ? (
               <tr className="border-b">
                 <th scope="row" className="px-6 py-4 whitespace-nowrap">
                   {item.nomeVinho}
@@ -79,6 +79,38 @@ export default function Tabela({ titulo, body, itemsPerPage }) {
                 <th class="px-6 py-4">
                   <a
                     href={`/Adm/Cadastro/Degustacao?Guid=${item.guid}`}
+                    className="text-white font-medium rounded-lg text-md w-full sm:w-auto px-5 py-2.5 text-center border-[#d7006e] bg-[#d7006e]"
+                  >
+                    Editar
+                  </a>
+                </th>
+              </tr>
+            ) : (
+              <tr className="border-b">
+                <th scope="row" className="px-6 py-4">
+                  <div className="w-10">
+                    <img src={item.imagemPrincipal} />
+                  </div>
+                </th>
+                <th scope="row" className="px-6 py-4">
+                  <div className="w-10">
+                    <img src={item.imagemDegustacao} />
+                  </div>
+                </th>
+                <th scope="row" className="px-6 py-4">
+                  {item.textoDegustacao}
+                </th>
+                <th scope="row" className="px-6 py-4">
+                  <div className="w-10">
+                    <img src={item.imagemVinhos} />
+                  </div>
+                </th>
+                <th scope="row" className="px-6 py-4">
+                  {item.textoVinhos}
+                </th>
+                <th class="px-6 py-4">
+                  <a
+                    href={`/Adm/Cadastro/Portal?Guid=${item.guid}`}
                     className="text-white font-medium rounded-lg text-md w-full sm:w-auto px-5 py-2.5 text-center border-[#d7006e] bg-[#d7006e]"
                   >
                     Editar

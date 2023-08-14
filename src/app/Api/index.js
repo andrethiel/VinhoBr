@@ -253,3 +253,70 @@ export async function DEGUSTACAO_LISTAR_PORTAL() {
 
   return response.data;
 }
+
+export async function PORTAL_LISTAR() {
+  const token = sessionStorage.getItem("accessToken");
+  const response = await axios.get(
+    "https://localhost:44389/api/v1/portal/listar",
+    {
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    }
+  );
+
+  return response.data;
+}
+
+export async function PORTAL_BUSCAR_GUID(guid) {
+  const token = sessionStorage.getItem("accessToken");
+  const response = await axios.get(
+    "https://localhost:44389/api/v1/portal/BuscarGuid?Guid=" + guid,
+    {
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    }
+  );
+
+  return response.data;
+}
+
+export async function PORTAL_INSERIR(
+  ArquivoPrincipal,
+  ArquivoDegustacao,
+  TextoDegustacao,
+  ArquivoVinhos,
+  TextoVinhos,
+  Ativo
+) {
+  const form = new FormData();
+  form.append("ArquivoPrincipal", ArquivoPrincipal);
+  form.append("ArquivoDegustacao", ArquivoDegustacao);
+  form.append("TextoDegustacao", TextoDegustacao);
+  form.append("ArquivoVinhos", ArquivoVinhos);
+  form.append("TextoVinhos", TextoVinhos);
+  form.append("ativo", true);
+
+  console.log(form);
+  const token = sessionStorage.getItem("accessToken");
+  const response = await axios.post(
+    "https://localhost:44389/api/v1/portal/inserir",
+    form,
+    {
+      headers: {
+        Authorization: "Bearer " + token,
+        "Content-Type": "multipart/form-data",
+      },
+    }
+  );
+  return response.data;
+}
+
+export async function PORTAL_LISTAR_PORTAL() {
+  const response = await axios.get(
+    "https://localhost:44389/api/v1/portal/listarportal"
+  );
+
+  return response.data;
+}
