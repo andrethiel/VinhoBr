@@ -1,5 +1,4 @@
 "use client";
-import CurrencyInput from "react-currency-input-field";
 
 export default function TextBox({
   type,
