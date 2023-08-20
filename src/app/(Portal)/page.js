@@ -5,8 +5,10 @@ import { Loading } from "../Components/Loading";
 import "./style.css";
 
 export default function Home() {
+  const isBrowser = () => typeof window !== "undefined";
   useEffect(() => {
     listar();
+    WindowPage();
   }, []);
 
   async function listar() {
@@ -22,12 +24,22 @@ export default function Home() {
     setLoading(false);
   }
 
+  function WindowPage() {
+    if (isBrowser()) {
+      //Only add the event listener client-side
+      window.addEventListener("click", (e) =>
+        setLastClick(`${e.pageX}, ${e.pageY}`)
+      );
+    }
+  }
+
   const [imagemPrincipal, setImagemImagemPrincipal] = useState(null);
   const [imagemDegustacao, setImagemDegustacao] = useState(null);
   const [imagemVinho, setImagemVinho] = useState(null);
   const [textoDegustacao, setTextoDegustacao] = useState("");
   const [textVinho, setTextVinho] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [lastClick, setLastClick] = useState("");
 
   if (loading) return <Loading start={loading} />;
 
