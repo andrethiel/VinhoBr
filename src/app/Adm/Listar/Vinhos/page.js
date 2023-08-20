@@ -1,5 +1,6 @@
 "use client";
 import { VINHO_FILTRAR, VINHO_LISTAR_TUDO } from "@/app/Api";
+import Ahref from "@/app/Components/Ahref";
 import Botao from "@/app/Components/Botao";
 import TextBox from "@/app/Components/Input";
 import { Loading } from "@/app/Components/Loading";
@@ -64,12 +65,7 @@ export default function CadsatroVinhos() {
       <div className="mt-10">
         <div className="flex flex-col gap-2 md:flex-row md:justify-between lg:flex-row :lgjustify-between xl:flex-row xl:justify-between">
           <span className="text-2xl">Lista de Vinhos</span>
-          <Botao
-            secundary={true}
-            onClick={() => (window.location.href = "/Adm/Cadastro/Vinhos")}
-          >
-            Cadastrar vinho
-          </Botao>
+          <Ahref link={"/Adm/Cadastro/Vinhos"}>Cadastrar degustação</Ahref>
         </div>
       </div>
       {dados.length > 0 ? (

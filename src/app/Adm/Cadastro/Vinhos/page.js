@@ -10,7 +10,7 @@ import TextBox from "@/app/Components/Input";
 import Dropdonw from "@/app/Components/Select";
 import cadastroForm from "@/app/Data/cadastro";
 import { useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { redirect, useSearchParams } from "next/navigation";
 import Alerta from "@/app/Components/Alerta";
 import { Loading } from "@/app/Components/Loading";
 import Ahref from "@/app/Components/Ahref";
@@ -49,7 +49,7 @@ export default function Vinhos() {
       );
       setErrors([response.message]);
       setTimeout(() => {
-        window.location.href = "/Adm/Listar/Vinhos";
+        redirect("/Adm/Listar/Vinhos");
       }, 3000);
     } else {
       if (valida()) {
@@ -62,7 +62,7 @@ export default function Vinhos() {
         );
         setErrors([response.message]);
         setTimeout(() => {
-          window.location.href = "/Adm/Listar/Vinhos";
+          redirect("/Adm/Listar/Vinhos");
         }, 3000);
       }
     }

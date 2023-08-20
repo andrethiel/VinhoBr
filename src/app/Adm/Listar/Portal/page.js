@@ -1,5 +1,6 @@
 "use client";
 import { PORTAL_LISTAR } from "@/app/Api";
+import Ahref from "@/app/Components/Ahref";
 import Botao from "@/app/Components/Botao";
 import { Loading } from "@/app/Components/Loading";
 import Tabela from "@/app/Components/Table";
@@ -40,12 +41,7 @@ export default function Portal() {
     <div className="mt-24">
       <div className="flex justify-between">
         <span className="text-2xl">Lista portal</span>
-        <Botao
-          secundary={true}
-          onClick={() => (window.location.href = "/Adm/Cadastro/Portal")}
-        >
-          Cadastro Portal
-        </Botao>
+        <Ahref link={"/Adm/Cadastro/Portal"}>Cadastrar degustação</Ahref>
       </div>
       <div className="mt-5">
         <Tabela titulo={titulo} body={dados} itemsPerPage={10} />

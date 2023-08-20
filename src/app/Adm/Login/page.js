@@ -7,6 +7,7 @@ import { Loading } from "@/app/Components/Loading";
 import usuarioForm from "@/app/Data/usuario";
 import { UserCircleIcon, LockClosedIcon } from "@heroicons/react/24/outline";
 import moment from "moment/moment";
+import { redirect } from "next/dist/server/api-utils";
 import { useEffect, useState } from "react";
 
 export default function Login() {
@@ -24,7 +25,7 @@ export default function Login() {
       if (data > token.ValidoAte) {
         RefreshToken();
       } else {
-        window.location.href = "/Adm/Cadastro";
+        redirect("/Adm/Cadastro");
       }
     }
   }, []);
@@ -42,7 +43,7 @@ export default function Login() {
         );
       }
       sessionStorage.setItem("accessToken", response.accessToken);
-      window.location.href = "/Adm/Cadastro";
+      redirect("/Adm/Cadastro");
     }
   }
 
@@ -63,7 +64,7 @@ export default function Login() {
           );
         }
         sessionStorage.setItem("accessToken", response.accessToken);
-        window.location.href = "/Adm/Cadastro";
+        redirect("/Adm/Cadastro");
         setLoading(false);
       } else {
         setErrors([response.erros[0], "error"]);

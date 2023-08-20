@@ -1,5 +1,6 @@
 "use client";
 import { DEGUSTACAO_LISTAR } from "@/app/Api";
+import Ahref from "@/app/Components/Ahref";
 import Botao from "@/app/Components/Botao";
 import { Loading } from "@/app/Components/Loading";
 import Tabela from "@/app/Components/Table";
@@ -33,12 +34,7 @@ export default function CadastroDegustacao() {
       <div className="mt-24">
         <div className="flex justify-between">
           <span className="text-2xl">Lista de Degustação</span>
-          <Botao
-            secundary={true}
-            onClick={() => (window.location.href = "/Adm/Cadastro/Degustacao")}
-          >
-            Cadastrar degustação
-          </Botao>
+          <Ahref link={"/Adm/Cadastro/Degustacao"}>Cadastrar degustação</Ahref>
         </div>
       </div>
       <div className="mt-10 mb-10 gap-5">

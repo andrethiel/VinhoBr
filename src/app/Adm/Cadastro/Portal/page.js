@@ -7,7 +7,7 @@ import MyEditor from "@/app/Components/Editor";
 import TextBox from "@/app/Components/Input";
 import { Loading } from "@/app/Components/Loading";
 import cadastroForm from "@/app/Data/cadastro";
-import { useSearchParams } from "next/navigation";
+import { redirect, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function Portal() {
@@ -54,7 +54,7 @@ export default function Portal() {
       );
       setErrors([response.message]);
       setTimeout(() => {
-        window.location.href = "/Adm/Listar/Portal";
+        redirect("/Adm/Listar/Portal");
       }, 3000);
     } else {
       if (valida()) {
@@ -68,7 +68,7 @@ export default function Portal() {
         );
         setErrors([response.message]);
         setTimeout(() => {
-          window.location.href = "/Adm/Listar/Portal";
+          redirect("/Adm/Listar/Portal");
         }, 3000);
       }
     }
