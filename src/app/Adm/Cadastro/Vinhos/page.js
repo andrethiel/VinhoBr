@@ -13,6 +13,7 @@ import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import Alerta from "@/app/Components/Alerta";
 import { Loading } from "@/app/Components/Loading";
+import Ahref from "@/app/Components/Ahref";
 
 export default function Vinhos() {
   const param = useSearchParams();
@@ -174,12 +175,7 @@ export default function Vinhos() {
         <Botao onClick={inserir}>
           {param.get("Guid") != null ? "Editar" : "Cadastrar"}
         </Botao>
-        <Botao
-          secundary={true}
-          onClick={() => (window.location.href = "/Adm/Listar/Vinhos")}
-        >
-          Voltar
-        </Botao>
+        <Ahref link={"/Adm/Listar/Vinhos"}>Voltar</Ahref>
       </div>
     </div>
   );

@@ -5,6 +5,7 @@ import {
   DEGUSTACAO_INSERIR,
   VINHO_LISTAR_TUDO,
 } from "@/app/Api";
+import Ahref from "@/app/Components/Ahref";
 import Alerta from "@/app/Components/Alerta";
 import Botao from "@/app/Components/Botao";
 import TextBox from "@/app/Components/Input";
@@ -152,12 +153,7 @@ export default function Degustacao() {
         <Botao onClick={inserir}>
           {param.get("Guid") != null ? "Editar" : "Cadastrar"}
         </Botao>
-        <Botao
-          secundary={true}
-          onClick={() => (window.location.href = "/Adm/Listar/Degustacao")}
-        >
-          Voltar
-        </Botao>
+        <Ahref link={"/Adm/Listar/Degustacao"}>Voltar</Ahref>
       </div>
     </div>
   );

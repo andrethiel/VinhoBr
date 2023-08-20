@@ -3,12 +3,11 @@ import { useEffect, useState } from "react";
 import { PORTAL_LISTAR_PORTAL } from "../Api";
 import { Loading } from "../Components/Loading";
 import "./style.css";
+import Link from "next/link";
 
 export default function Home() {
-  const isBrowser = () => typeof window !== "undefined";
   useEffect(() => {
     listar();
-    WindowPage();
   }, []);
 
   async function listar() {
@@ -24,28 +23,18 @@ export default function Home() {
     setLoading(false);
   }
 
-  function WindowPage() {
-    if (isBrowser()) {
-      //Only add the event listener client-side
-      window.addEventListener("click", (e) =>
-        setLastClick(`${e.pageX}, ${e.pageY}`)
-      );
-    }
-  }
-
   const [imagemPrincipal, setImagemImagemPrincipal] = useState(null);
   const [imagemDegustacao, setImagemDegustacao] = useState(null);
   const [imagemVinho, setImagemVinho] = useState(null);
   const [textoDegustacao, setTextoDegustacao] = useState("");
   const [textVinho, setTextVinho] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [lastClick, setLastClick] = useState("");
 
   if (loading) return <Loading start={loading} />;
 
   return (
     <div className="h-full w-full">
-      <a href="/Degustacao">
+      <Link href="/Degustacao">
         <div className="grid grid-cols-2 py-5 ">
           <div style={{ width: "90%" }} className="rounded-lg">
             <img src={imagemDegustacao} />
@@ -57,8 +46,8 @@ export default function Home() {
             }}
           ></div>
         </div>
-      </a>
-      <a href="/Vinhos">
+      </Link>
+      <Link href="/Vinhos">
         <div className="grid grid-cols-2 py-5 gap-5">
           <div
             className="flex justify-center items-center flex-col"
@@ -70,7 +59,7 @@ export default function Home() {
             <img src={imagemVinho} />
           </div>
         </div>
-      </a>
+      </Link>
     </div>
   );
 }

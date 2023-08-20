@@ -1,5 +1,6 @@
 "use client";
 import { PORTAL_BUSCAR_GUID, PORTAL_EDITAR, PORTAL_INSERIR } from "@/app/Api";
+import Ahref from "@/app/Components/Ahref";
 import Alerta from "@/app/Components/Alerta";
 import Botao from "@/app/Components/Botao";
 import MyEditor from "@/app/Components/Editor";
@@ -256,12 +257,7 @@ export default function Portal() {
         <Botao onClick={Inserir}>
           {param.get("Guid") != null ? "Editar" : "Cadastrar"}
         </Botao>
-        <Botao
-          secundary={true}
-          onClick={() => (window.location.href = "/Adm/Listar/Portal")}
-        >
-          Voltar
-        </Botao>
+        <Ahref link={"/Adm/Listar/Portal"}>Voltar</Ahref>
       </div>
     </div>
   );
