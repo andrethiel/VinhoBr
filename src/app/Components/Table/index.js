@@ -1,9 +1,14 @@
 "use client";
 import { useState } from "react";
 import ReactPaginate from "react-paginate";
-import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
+import {
+  ChevronLeftIcon,
+  ChevronRightIcon,
+  CheckCircleIcon,
+  XCircleIcon,
+} from "@heroicons/react/24/outline";
 
-export default function Tabela({ titulo, body, itemsPerPage }) {
+export default function Tabela({ titulo, body, itemsPerPage, onClick }) {
   const [itemOffset, setItemOffset] = useState(0);
 
   const endOffset = itemOffset + itemsPerPage;
@@ -37,14 +42,14 @@ export default function Tabela({ titulo, body, itemsPerPage }) {
                 <th scope="row" className="px-6 py-4 whitespace-nowrap">
                   {item.nomeVinho}
                 </th>
-                <th class="px-6 py-4">
+                <th className="px-6 py-4">
                   {item.preco.toLocaleString("pt-br", {
                     style: "currency",
                     currency: "BRL",
                   })}
                 </th>
-                <th class="px-6 py-4">{item.pais}</th>
-                <th class="px-6 py-4">
+                <th className="px-6 py-4">{item.pais}</th>
+                <th className="px-6 py-4">
                   <a
                     href={`/Adm/Cadastro/Vinhos?Guid=${item.guid}`}
                     className="text-white font-medium rounded-lg text-md w-full sm:w-auto px-5 py-2.5 text-center border-[#d7006e] bg-[#d7006e]"
@@ -58,25 +63,25 @@ export default function Tabela({ titulo, body, itemsPerPage }) {
                 <th scope="row" className="px-6 py-4 whitespace-nowrap">
                   {item.nomeVinho}
                 </th>
-                <th class="px-6 py-4">
+                <th className="px-6 py-4">
                   {item.valor25.toLocaleString("pt-br", {
                     style: "currency",
                     currency: "BRL",
                   })}
                 </th>
-                <th class="px-6 py-4">
+                <th className="px-6 py-4">
                   {item.valor50.toLocaleString("pt-br", {
                     style: "currency",
                     currency: "BRL",
                   })}
                 </th>
-                <th class="px-6 py-4">
+                <th className="px-6 py-4">
                   {item.valor125.toLocaleString("pt-br", {
                     style: "currency",
                     currency: "BRL",
                   })}
                 </th>
-                <th class="px-6 py-4">
+                <th className="px-6 py-4">
                   <a
                     href={`/Adm/Cadastro/Degustacao?Guid=${item.guid}`}
                     className="text-white font-medium rounded-lg text-md w-full sm:w-auto px-5 py-2.5 text-center border-[#d7006e] bg-[#d7006e]"
@@ -88,33 +93,61 @@ export default function Tabela({ titulo, body, itemsPerPage }) {
             ) : (
               <tr className="border-b">
                 <th scope="row" className="px-6 py-4">
-                  <div className="w-10">
+                  <div className="w-16">
                     <img src={item.imagemPrincipal} />
                   </div>
                 </th>
                 <th scope="row" className="px-6 py-4">
-                  <div className="w-10">
+                  <div className="w-16">
                     <img src={item.imagemDegustacao} />
                   </div>
                 </th>
                 <th scope="row" className="px-6 py-4">
-                  {item.textoDegustacao}
+                  <div
+                    className="flex justify-center items-center flex-col"
+                    dangerouslySetInnerHTML={{
+                      __html: item.textoDegustacao,
+                    }}
+                  ></div>
                 </th>
                 <th scope="row" className="px-6 py-4">
-                  <div className="w-10">
+                  <div className="w-16">
                     <img src={item.imagemVinhos} />
                   </div>
                 </th>
                 <th scope="row" className="px-6 py-4">
-                  {item.textoVinhos}
+                  <div
+                    className="flex justify-center items-center flex-col"
+                    dangerouslySetInnerHTML={{
+                      __html: item.textoVinhos,
+                    }}
+                  ></div>
                 </th>
-                <th class="px-6 py-4">
-                  <a
-                    href={`/Adm/Cadastro/Portal?Guid=${item.guid}`}
-                    className="text-white font-medium rounded-lg text-md w-full sm:w-auto px-5 py-2.5 text-center border-[#d7006e] bg-[#d7006e]"
-                  >
-                    Editar
-                  </a>
+                <th scope="row" className="px-6 py-4">
+                  <span>
+                    {item.ativo == true ? (
+                      <CheckCircleIcon className="text-green-700" />
+                    ) : (
+                      <XCircleIcon className="text-red-700" />
+                    )}
+                  </span>
+                </th>
+                <th className="px-6 py-4">
+                  {item.ativo == false ? (
+                    <a
+                      href="#"
+                      className="text-white font-medium rounded-lg text-md w-full sm:w-auto px-5 py-2.5 text-center border-[#d7006e] bg-[#d7006e]"
+                    >
+                      Editar
+                    </a>
+                  ) : (
+                    <a
+                      href={`/Adm/Cadastro/Portal?Guid=${item.guid}`}
+                      className="text-white font-medium rounded-lg text-md w-full sm:w-auto px-5 py-2.5 text-center border-[#d7006e] bg-[#d7006e]"
+                    >
+                      Editar
+                    </a>
+                  )}
                 </th>
               </tr>
             )

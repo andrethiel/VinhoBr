@@ -31,7 +31,7 @@ export default function RootLayout({ children }) {
             <a href="#" className="flex items-center">
               <img
                 src="https://www.vinhobr.com.br/imagens_do_site/0A1181EA-93B7-4436-9FBE-0A0F6EE27C40.png"
-                className="h-11 mr-3"
+                className="h-14 mr-3"
               />
             </a>
             <div className="flex lg:hidden md:hidden">
@@ -93,14 +93,14 @@ export default function RootLayout({ children }) {
             </div>
           </div>
         </nav>
-        <div className="container px-6 mx-auto sm:container sm:px-20 md:mx-auto md:px-20 lg:px-20 lg:mx-auto">
-          <div>
-            <img src={`./slide-home.jpg`} />
+        <div className="container px-6 sm:container sm:px-20 md:mx-auto md:px-20 lg:px-20 lg:mx-auto max-h-screen">
+          <div className="flex justify-center items-center">
+            <img src={`./slide-home.jpg`} style={{ width: "100%" }} />
           </div>
           {children}
-          <footer className="rounded-lg shadow mb-5 mt-5 bg-gray-600">
-            <div className="w-full mx-auto max-w-screen-xl p-4 md:flex md:items-center md:justify-between">
-              <span className="text-sm text-gray-500 sm:text-center dark:text-gray-400">
+          <footer className="max-w-screen mx-auto rounded-lg shadow mb-5 mt-10 bg-gray-600">
+            <div className="flex items-center justify-center p-4">
+              <span className="text-sm text-gray-500 sm:text-cent">
                 © {data.getFullYear()} VinhoBr™ City Center Outlet . All Rights
                 Reserved.
               </span>

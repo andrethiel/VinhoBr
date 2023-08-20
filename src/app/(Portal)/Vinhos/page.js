@@ -92,7 +92,7 @@ export default function Vinhos() {
         {dados.length > 0 ? (
           dados.map((item) => (
             <Card
-              image={item.urlImagem}
+              image={item.urlImagem == "" ? item.imagem : item.urlImagem}
               preco={item.preco.toLocaleString("pt-br", {
                 style: "currency",
                 currency: "BRL",

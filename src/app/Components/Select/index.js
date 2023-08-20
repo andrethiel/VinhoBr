@@ -24,9 +24,9 @@ export default function Dropdonw({
         </>
       ) : (
         <>
-          <option value="">Selecione um Item</option>
+          <option value="">Selecione um Pais</option>
           {paises.map((item) => (
-            <option value={item.sigla}>{item.nome}</option>
+            <option value={item.id}>{item.nome}</option>
           ))}
         </>
       )}

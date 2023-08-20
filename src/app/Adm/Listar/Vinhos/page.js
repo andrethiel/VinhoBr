@@ -41,30 +41,28 @@ export default function CadsatroVinhos() {
 
   if (loading) return <Loading start={true} />;
   return (
-    <>
-      <div>
-        <div className="mt-24">
-          <span className="text-3xl">Filtro de Vinhos</span>
-        </div>
-        <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-3 mt-10 mb-10 gap-5">
-          <TextBox
-            placeholder="Nome do vinho"
-            onChange={(e) => setNome(e.target.value)}
-            value={nome}
-          />
-          <Dropdonw
-            onChange={(e) => setPais(e.target.value)}
-            value={pais}
-            paises={paises}
-          />
-          <div>
-            <Botao onClick={Pesquisar}>Filtrar</Botao>
-          </div>
+    <div>
+      <div className="mt-24">
+        <span className="text-3xl">Filtro de Vinhos</span>
+      </div>
+      <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-3 mt-10 mb-10 gap-5">
+        <TextBox
+          placeholder="Nome do vinho"
+          onChange={(e) => setNome(e.target.value)}
+          value={nome}
+        />
+        <Dropdonw
+          onChange={(e) => setPais(e.target.value)}
+          value={pais}
+          paises={paises}
+        />
+        <div>
+          <Botao onClick={Pesquisar}>Filtrar</Botao>
         </div>
       </div>
 
       <div className="mt-10">
-        <div className="flex justify-between">
+        <div className="flex flex-col gap-2 md:flex-row md:justify-between lg:flex-row :lgjustify-between xl:flex-row xl:justify-between">
           <span className="text-2xl">Lista de Vinhos</span>
           <Botao
             secundary={true}
@@ -81,6 +79,6 @@ export default function CadsatroVinhos() {
       ) : (
         <span className="text-2xl">Nenhum dado encontrado</span>
       )}
-    </>
+    </div>
   );
 }

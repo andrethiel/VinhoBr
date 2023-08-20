@@ -12,9 +12,16 @@ export const LOGIN = async (usuario, senha) => {
   return response.data;
 };
 
-export const REFRESH_TOKEN = async (token) => {
+export const REFRESH_TOKEN = async () => {
+  const token = JSON.parse(localStorage.getItem("accessToken"));
   const response = await axios.post(
-    "https://andrethiel-001-site1.btempurl.com/api/v1/usuario/refresh-token"
+    "https://andrethiel-001-site1.btempurl.com/api/v1/usuario/refresh-token",
+    "",
+    {
+      headers: {
+        Authorization: "Bearer " + token.accessToken,
+      },
+    }
   );
   return response.data;
 };
@@ -22,21 +29,20 @@ export const REFRESH_TOKEN = async (token) => {
 export const VINHO_INSERIR = async (nome, preco, pais, url, imagem) => {
   var valor = "";
   if (preco.toString().includes(",")) {
-    valor = preco.replace(",", ".");
-  } else {
-    valor = preco.toString() + ",00";
+    valor = preco.replace(",", ".").replace("R$", "");
   }
   const token = sessionStorage.getItem("accessToken");
 
+  const form = new FormData();
+  form.append("NomeVinho", nome);
+  form.append("Preco", valor != "" ? parseFloat(valor) : preco);
+  form.append("PaisId", pais);
+  form.append("UrlImagem", url);
+  form.append("Arquivo", imagem);
+
   const response = await axios.post(
     "https://andrethiel-001-site1.btempurl.com/api/v1/vinhos/inserir",
-    {
-      NomeVinho: nome,
-      Preco: valor,
-      Pais: pais,
-      UrlImagem: url,
-      Imagem: imagem,
-    },
+    form,
     {
       headers: {
         Authorization: "Bearer " + token,
@@ -87,24 +93,24 @@ export const EDITAR_VINHO = async (
   url,
   imagem
 ) => {
-  const token = sessionStorage.getItem("accessToken");
   var valor = "";
   if (preco.toString().includes(",")) {
-    valor = preco.replace(",", ".");
-  } else {
-    valor = preco.toString() + ",00";
+    valor = preco.replace(",", ".").replace("R$", "");
   }
+  const token = sessionStorage.getItem("accessToken");
+
+  const form = new FormData();
+  form.append("Id", id);
+  form.append("Guid", guid);
+  form.append("NomeVinho", nome);
+  form.append("Preco", valor != "" ? parseFloat(valor) : preco);
+  form.append("PaisId", pais);
+  form.append("UrlImagem", url);
+  form.append("Arquivo", imagem);
+
   const response = await axios.post(
     "https://andrethiel-001-site1.btempurl.com/api/v1/vinhos/Editar",
-    {
-      Id: id,
-      Guid: guid,
-      NomeVinho: nome,
-      Preco: valor,
-      Pais: pais,
-      UrlImagem: url,
-      Imagem: imagem,
-    },
+    form,
     {
       headers: {
         Authorization: "Bearer " + token,
@@ -224,8 +230,14 @@ export async function DEGUSTACAO_EDITAR(
 }
 
 export async function DEGUSTACAO_LISTAR() {
+  const token = sessionStorage.getItem("accessToken");
   const response = await axios.get(
-    "https://andrethiel-001-site1.btempurl.com/api/v1/degustacao/listar"
+    "https://andrethiel-001-site1.btempurl.com/api/v1/degustacao/listar",
+    {
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    }
   );
 
   return response.data;
@@ -271,7 +283,8 @@ export async function PORTAL_LISTAR() {
 export async function PORTAL_BUSCAR_GUID(guid) {
   const token = sessionStorage.getItem("accessToken");
   const response = await axios.get(
-    "https://andrethiel-001-site1.btempurl.com/api/v1/portal/BuscarGuid?Guid=" + guid,
+    "https://andrethiel-001-site1.btempurl.com/api/v1/portal/BuscarGuid?Guid=" +
+      guid,
     {
       headers: {
         Authorization: "Bearer " + token,
@@ -298,10 +311,50 @@ export async function PORTAL_INSERIR(
   form.append("TextoVinhos", TextoVinhos);
   form.append("ativo", true);
 
-  console.log(form);
   const token = sessionStorage.getItem("accessToken");
   const response = await axios.post(
     "https://andrethiel-001-site1.btempurl.com/api/v1/portal/inserir",
+    form,
+    {
+      headers: {
+        Authorization: "Bearer " + token,
+        "Content-Type": "multipart/form-data",
+      },
+    }
+  );
+  return response.data;
+}
+
+export async function PORTAL_EDITAR(
+  id,
+  guid,
+  ArquivoPrincipal,
+  imagemPrincipal,
+  ArquivoDegustacao,
+  imagemDegustacao,
+  TextoDegustacao,
+  ArquivoVinhos,
+  imagemVinho,
+  TextoVinhos,
+  ativo
+) {
+  const form = new FormData();
+  form.append("Id", id);
+  form.append("guid", guid);
+  form.append("ArquivoPrincipal", ArquivoPrincipal);
+  form.append("ArquivoPrincipal", ArquivoPrincipal);
+  form.append("ImagemPrincipal", imagemPrincipal);
+  form.append("ArquivoDegustacao", ArquivoDegustacao);
+  form.append("ImagemDegustacao", imagemDegustacao);
+  form.append("TextoDegustacao", TextoDegustacao);
+  form.append("ArquivoVinhos", ArquivoVinhos);
+  form.append("ImagemVinhos", imagemVinho);
+  form.append("TextoVinhos", TextoVinhos);
+  form.append("Ativo", ativo);
+
+  const token = sessionStorage.getItem("accessToken");
+  const response = await axios.post(
+    "https://andrethiel-001-site1.btempurl.com/api/v1/portal/editar",
     form,
     {
       headers: {

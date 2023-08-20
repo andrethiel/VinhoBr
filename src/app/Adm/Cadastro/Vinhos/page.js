@@ -32,9 +32,90 @@ export default function Vinhos() {
     }
     setLoading(false);
   }
+
+  async function inserir() {
+    setLoading(true);
+    if (param.get("Guid") != null) {
+      arquivo != null ? url.setValue("") : arquivo;
+      const response = await EDITAR_VINHO(
+        id.value,
+        guid.value,
+        nome.value,
+        valor.value,
+        pais.value,
+        url.value,
+        arquivo
+      );
+      setErrors([response.message]);
+      setTimeout(() => {
+        window.location.href = "/Adm/Listar/Vinhos";
+      }, 3000);
+    } else {
+      if (valida()) {
+        const response = await VINHO_INSERIR(
+          nome.value,
+          valor.value,
+          pais.value,
+          url.value,
+          arquivo
+        );
+        setErrors([response.message]);
+        setTimeout(() => {
+          window.location.href = "/Adm/Listar/Vinhos";
+        }, 3000);
+      }
+    }
+    setLoading(false);
+  }
+
+  async function BuscarGuid() {
+    setLoading(true);
+    const response = await VINHO_BUSCAR_GUID(param.get("Guid"));
+    if (response.sucesso) {
+      id.setValue(response.dados.id);
+      guid.setValue(response.dados.guid);
+      nome.setValue(response.dados.nomeVinho);
+      valor.setValue(
+        response.dados.preco.toLocaleString("pt-br", {
+          style: "currency",
+          currency: "BRL",
+        })
+      );
+      pais.setValue(response.dados.paisId);
+      url.setValue(response.dados.urlImagem);
+      setImagem(response.dados.imagem);
+    }
+    setLoading(false);
+  }
+
+  function valida() {
+    if (!nome.valida()) {
+      setErrors(["Digite o nome do vinho", "error"]);
+      return false;
+    }
+    if (!valor.valida()) {
+      setErrors(["Digite o valor do vinho", "error"]);
+      return false;
+    }
+    if (!pais.valida()) {
+      setErrors(["Selecione o pais do vinho", "error"]);
+      return false;
+    }
+    if (!url.valida() && imagem == null) {
+      setErrors([
+        "Digite a url da imagem do vinho ou selecione uma imagem",
+        "error",
+      ]);
+      return false;
+    }
+    return true;
+  }
+
   const [paises, setPaises] = useState([]);
-  const [imagem, setImagem] = useState();
+  const [arquivo, setArquivo] = useState(null);
+  const [imagem, setImagem] = useState(null);
   const [errors, setErrors] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const id = cadastroForm();
   const guid = cadastroForm();
@@ -42,56 +123,6 @@ export default function Vinhos() {
   const valor = cadastroForm();
   const pais = cadastroForm();
   const url = cadastroForm();
-
-  async function inserir() {
-    if (nome.valida() && pais.valida()) {
-      setLoading(true);
-      if (param.get("Guid") != null) {
-        const response = await EDITAR_VINHO(
-          id.value,
-          guid.value,
-          nome.value,
-          valor.value,
-          pais.value,
-          url.value,
-          imagem
-        );
-        setErrors([response.message]);
-        setTimeout(() => {
-          window.location.href = "/Adm/Listar/Vinhos";
-        }, 3000);
-      } else {
-        const response = await VINHO_INSERIR(
-          nome.value,
-          valor.value,
-          pais.value,
-          url.value,
-          imagem
-        );
-        setErrors([response.message]);
-        setTimeout(() => {
-          window.location.href = "/Adm/Listar/Vinhos";
-        }, 3000);
-      }
-      setLoading(false);
-    }
-  }
-
-  async function BuscarGuid() {
-    setLoading(true);
-    const response = await VINHO_BUSCAR_GUID(param.get("Guid"));
-    if (response.sucesso) {
-      id.setValue(response.id);
-      guid.setValue(response.guid);
-      nome.setValue(response.nomeVinho);
-      valor.setValue(response.preco);
-      pais.setValue(response.pais);
-      url.setValue(response.urlImagem);
-    }
-    setLoading(false);
-  }
-
-  const [loading, setLoading] = useState(false);
 
   if (loading) return <Loading start={true} />;
 
@@ -102,7 +133,7 @@ export default function Vinhos() {
           {param.get("Guid") != null ? "Editar Vinho" : "Cadastro de Vinhos"}
         </span>
       </div>
-      {errors.length > 0 && <Alerta>{errors[0]}</Alerta>}
+      {errors.length > 0 && <Alerta type={errors[1]}>{errors[0]}</Alerta>}
       <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 mt-10 mb-10 gap-5">
         <TextBox placeholder="Nome do vinho" {...nome} />
         <TextBox placeholder="Valor do vinho" {...valor} />
@@ -114,10 +145,29 @@ export default function Vinhos() {
         <TextBox placeholder="Url Imagem" {...url} />
         <TextBox
           type="file"
-          onChange={(e) => setImagem(e.target.files[0])}
+          onChange={(e) => setArquivo(e.target.files[0])}
           accept="image/*"
         />
-        {imagem && <img src={URL.createObjectURL(imagem)} />}
+        {imagem != null ? (
+          <div className="w-full flex mt-2">
+            <div className="flex flex-row h-24 gap-10">
+              <div className="flex flex-col justify-center items-center">
+                <div>
+                  <span>Imagem atual</span>
+                  <img src={imagem} className="h-20" />
+                </div>
+              </div>
+            </div>
+          </div>
+        ) : null}
+        {arquivo && (
+          <div className="w-full flex mt-2">
+            <div className="flex flex-col justify-center items-center">
+              <span>Nova Imagem</span>
+              <img src={URL.createObjectURL(arquivo)} className="h-20" />
+            </div>
+          </div>
+        )}
       </div>
 
       <div className="flex gap-5">

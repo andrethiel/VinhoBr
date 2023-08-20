@@ -1,7 +1,8 @@
 "use client";
-import { PORTAL_BUSCAR_GUID, PORTAL_INSERIR } from "@/app/Api";
+import { PORTAL_BUSCAR_GUID, PORTAL_EDITAR, PORTAL_INSERIR } from "@/app/Api";
 import Alerta from "@/app/Components/Alerta";
 import Botao from "@/app/Components/Botao";
+import MyEditor from "@/app/Components/Editor";
 import TextBox from "@/app/Components/Input";
 import { Loading } from "@/app/Components/Loading";
 import cadastroForm from "@/app/Data/cadastro";
@@ -19,39 +20,95 @@ export default function Portal() {
     setLoading(true);
     const response = await PORTAL_BUSCAR_GUID(param.get("Guid"));
     if (response.sucesso) {
+      setID(response.dados.id);
+      setGuid(response.dados.guid);
       setImagemImagemPrincipal(response.dados.imagemPrincipal);
       setImagemDegustacao(response.dados.imagemDegustacao);
       setImagemVinho(response.dados.imagemVinhos);
+      setTextoDegustacao(response.dados.textoDegustacao);
+      setTextoVinho(response.dados.textoVinhos);
     }
     setLoading(false);
   }
 
+  function nomeArquivo(arquivo) {
+    const nome = arquivo.split("/");
+    return nome[4];
+  }
+
   async function Inserir() {
-    const response = await PORTAL_INSERIR(
-      arquivoPrincipal,
-      arquivoDegustacao,
-      textoDegustacao.value,
-      ArquivoVinho,
-      textVinho.value
-    );
-    setErrors([response.message]);
-    setTimeout(() => {
-      window.location.href = "/Adm/Listar/Vinhos";
-    }, 3000);
+    if (id != null) {
+      const response = await PORTAL_EDITAR(
+        id,
+        guid,
+        arquivoPrincipal,
+        nomeArquivo(imagemPrincipal),
+        arquivoDegustacao,
+        nomeArquivo(imagemDegustacao),
+        textoDegustacao,
+        ArquivoVinho,
+        nomeArquivo(imagemVinho),
+        textoVinho,
+        true
+      );
+      setErrors([response.message]);
+      setTimeout(() => {
+        window.location.href = "/Adm/Listar/Portal";
+      }, 3000);
+    } else {
+      if (valida()) {
+        const response = await PORTAL_INSERIR(
+          arquivoPrincipal,
+          arquivoDegustacao,
+          textoDegustacao,
+          ArquivoVinho,
+          textoVinho,
+          true
+        );
+        setErrors([response.message]);
+        setTimeout(() => {
+          window.location.href = "/Adm/Listar/Portal";
+        }, 3000);
+      }
+    }
+  }
+
+  function valida() {
+    if (arquivoPrincipal == null) {
+      setErrors(["Selecione o arquivo para a imagem pricipal", "error"]);
+      return false;
+    }
+    if (arquivoDegustacao == null) {
+      setErrors(["Selecione o arquivo para a imagem degustação", "error"]);
+      return false;
+    }
+    if (textoDegustacao == null) {
+      setErrors(["Digite o texto para a degustação", "error"]);
+      return false;
+    }
+    if (ArquivoVinho == null) {
+      setErrors(["Selecione o arquivo para a imagem vinhos", "error"]);
+      return false;
+    }
+    if (textoVinho == null) {
+      setErrors(["Digite o texto para os vinhos", "error"]);
+      return false;
+    }
+    return true;
   }
 
   const param = useSearchParams();
-  const [arquivoPrincipal, setArquivoPrincipal] = useState();
-  const [arquivoDegustacao, setArquivoDegustacao] = useState();
-  const [ArquivoVinho, setArquivoVinho] = useState();
+  const [id, setID] = useState(null);
+  const [guid, setGuid] = useState(null);
+  const [arquivoPrincipal, setArquivoPrincipal] = useState(null);
+  const [arquivoDegustacao, setArquivoDegustacao] = useState(null);
+  const [ArquivoVinho, setArquivoVinho] = useState(null);
   const [imagemPrincipal, setImagemImagemPrincipal] = useState(null);
   const [imagemDegustacao, setImagemDegustacao] = useState(null);
   const [imagemVinho, setImagemVinho] = useState(null);
   const [errors, setErrors] = useState([]);
-
-  const textoDegustacao = cadastroForm();
-  const textVinho = cadastroForm();
-
+  const [textoDegustacao, setTextoDegustacao] = useState(null);
+  const [textoVinho, setTextoVinho] = useState(null);
   const [loading, setLoading] = useState(false);
 
   if (loading) return <Loading start={true} />;
@@ -62,7 +119,7 @@ export default function Portal() {
         {param.get("Guid") != null ? "Editar Portal" : "Cadastro Portal"}
       </span>
       <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-1 xl:grid-cols-1 mt-10 mb-10 gap-5">
-        {errors.length > 0 && <Alerta>{errors[0]}</Alerta>}
+        {errors.length > 0 && <Alerta type={errors[1]}>{errors[0]}</Alerta>}
         <div>
           <label className="block mb-2 text-sm font-medium">
             Imagem principal
@@ -134,7 +191,17 @@ export default function Portal() {
               )}
             </div>
           </div>
-          <TextBox placeholder="Texto Degustação" {...textoDegustacao} />
+          <label className="block text-sm font-medium">Texto Degustação</label>
+          <div className="border h-full">
+            <MyEditor
+              id="degustacao"
+              editorState={textoDegustacao}
+              onChange={(event, editor) => {
+                const data = editor.getData();
+                setTextoDegustacao(data);
+              }}
+            />
+          </div>
         </div>
         <div className="flex flex-col gap-5">
           <div>
@@ -172,7 +239,17 @@ export default function Portal() {
               )}
             </div>
           </div>
-          <TextBox placeholder="Texto Vinho" {...textVinho} />
+          <label className="block text-sm font-medium">Texto Vinho</label>
+          <div className="border">
+            <MyEditor
+              id="vinho"
+              editorState={textoVinho}
+              onChange={(event, editor) => {
+                const data = editor.getData();
+                setTextoVinho(data);
+              }}
+            />
+          </div>
         </div>
       </div>
       <div className="flex gap-5">

@@ -27,7 +27,9 @@ export default function Portal() {
     "Texto degustação",
     "Imagem vinho",
     "texto vinho",
+    "Ativo",
   ];
+
   const [dados, setDados] = useState([]);
 
   const [loading, setLoading] = useState(false);

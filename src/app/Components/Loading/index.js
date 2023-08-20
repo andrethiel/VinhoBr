@@ -1,7 +1,13 @@
 "use client";
-import { useState } from "react";
 
 function Loading({ start }) {
+  function url() {
+    const linkUrl = "";
+    const href = window.location.href;
+    const link = href.split("/");
+    return linkUrl.concat(link[0], "//", link[2]);
+  }
+
   if (start) {
     return (
       <div
@@ -14,7 +20,7 @@ function Loading({ start }) {
           backgroundColor: "#fff",
         }}
       >
-        <img src="../loading.gif" />
+        <img src={url() + "/loading.gif"} />
       </div>
     );
   }

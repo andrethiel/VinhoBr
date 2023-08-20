@@ -6,40 +6,47 @@ import TextBox from "@/app/Components/Input";
 import { Loading } from "@/app/Components/Loading";
 import usuarioForm from "@/app/Data/usuario";
 import { UserCircleIcon, LockClosedIcon } from "@heroicons/react/24/outline";
-import axios from "axios";
+import moment from "moment/moment";
 import { useEffect, useState } from "react";
 
 export default function Login() {
   const usuario = usuarioForm();
   const senha = usuarioForm();
-  const [salvaSenha, SetsalvaSenha] = useState(false);
+
+  const [salvaSenha, SetsalvaSenha] = useState(true);
   const [errors, setErrors] = useState([]);
+  const [loading, setLoading] = useState(false);
 
-  // useEffect(() => {
-  //   if (localStorage.getItem("accessToken") !== null) {
-  //     const token = JSON.parse(localStorage.getItem("accessToken"));
-  //     const data = new Date(token.validoAte);
-  //     console.log(data);
-  //     // if ( > token.ValidoAte) {
-  //     //   console.log(new Date.now());
-  //     // }
-  //     async function RefreshToken() {
-  //       const response = await REFRESH_TOKEN(
-  //         localStorage.getItem("accessToken")
-  //       );
-  //       if (response.sucesso) {
-  //         if (salvaSenha) {
-  //           localStorage.setItem("accessToken", response.refreshToken);
-  //         }
-  //         sessionStorage.setItem("accessToken", response.accessToken);
-  //         window.location.href = "/Adm/Cadastro";
-  //       }
-  //     }
-  //   }
-  // }, []);
+  useEffect(() => {
+    if (localStorage.getItem("accessToken") !== null) {
+      const token = JSON.parse(localStorage.getItem("accessToken"));
+      const data = moment(new Date()).format("DD/MM/YYYY HH:mm");
+      if (data > token.ValidoAte) {
+        RefreshToken();
+      } else {
+        window.location.href = "/Adm/Cadastro";
+      }
+    }
+  }, []);
 
-  async function Entrar(event) {
-    event.preventDefault();
+  async function RefreshToken() {
+    const response = await REFRESH_TOKEN();
+    if (response.sucesso) {
+      if (salvaSenha) {
+        localStorage.setItem(
+          "accessToken",
+          JSON.stringify({
+            ValidoAte: response.validoAte,
+            accessToken: response.refreshToken,
+          })
+        );
+      }
+      sessionStorage.setItem("accessToken", response.accessToken);
+      window.location.href = "/Adm/Cadastro";
+    }
+  }
+
+  async function Entrar() {
     localStorage.clear();
     sessionStorage.clear();
     if (usuario.valida() && senha.valida()) {
@@ -63,8 +70,6 @@ export default function Login() {
       }
     }
   }
-
-  const [loading, setLoading] = useState(false);
 
   if (loading) return <Loading start={true} />;
 

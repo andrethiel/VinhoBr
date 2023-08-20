@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { PORTAL_LISTAR_PORTAL } from "../Api";
 import { Loading } from "../Components/Loading";
-// import {} from "../Components/Loading";
+import "./style.css";
 
 export default function Home() {
   useEffect(() => {
@@ -18,13 +18,14 @@ export default function Home() {
       setTextoDegustacao(response.dados.textoDegustacao);
       setTextVinho(response.dados.textoVinhos);
     }
+
     setLoading(false);
   }
 
   const [imagemPrincipal, setImagemImagemPrincipal] = useState(null);
   const [imagemDegustacao, setImagemDegustacao] = useState(null);
   const [imagemVinho, setImagemVinho] = useState(null);
-  const [textoDegustacao, setTextoDegustacao] = useState(null);
+  const [textoDegustacao, setTextoDegustacao] = useState("");
   const [textVinho, setTextVinho] = useState(null);
   const [loading, setLoading] = useState(false);
 
@@ -33,18 +34,26 @@ export default function Home() {
   return (
     <div className="h-full w-full">
       <a href="/Degustacao">
-        <div className="grid grid-cols-2 py-5">
-          <div>
+        <div className="grid grid-cols-2 py-5 ">
+          <div style={{ width: "90%" }} className="rounded-lg">
             <img src={imagemDegustacao} />
           </div>
-          <div className="flex justify-center items-center">
-            {textoDegustacao}
-          </div>
+          <div
+            className="flex justify-center items-center flex-col"
+            dangerouslySetInnerHTML={{
+              __html: textoDegustacao,
+            }}
+          ></div>
         </div>
       </a>
       <a href="/Vinhos">
         <div className="grid grid-cols-2 py-5 gap-5">
-          <div className="flex justify-center items-center">{textVinho}</div>
+          <div
+            className="flex justify-center items-center flex-col"
+            dangerouslySetInnerHTML={{
+              __html: textVinho,
+            }}
+          ></div>
           <div>
             <img src={imagemVinho} />
           </div>

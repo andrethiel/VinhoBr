@@ -6,7 +6,7 @@ const inter = Inter({ subsets: ["latin"] });
 
 export default function LoginLayout({ children }) {
   return (
-    <html lang="en">
+    <html lang="br">
       <body className={inter.className}>{children}</body>
     </html>
   );
