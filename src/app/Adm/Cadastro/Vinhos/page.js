@@ -15,10 +15,6 @@ import Alerta from "@/app/Components/Alerta";
 import { Loading } from "@/app/Components/Loading";
 import Ahref from "@/app/Components/Ahref";
 
-export const metadata = {
-  title: "Lista de Vinhos",
-};
-
 export default function Vinhos() {
   const param = useSearchParams();
 

@@ -8,9 +8,6 @@ import Dropdonw from "@/app/Components/Select";
 import Tabela from "@/app/Components/Table";
 import { useEffect, useState } from "react";
 
-export const metadata = {
-  title: "Lista de Vinhos",
-};
 export default function ListaVinhos() {
   useEffect(() => {
     if (dados.length == 0) {

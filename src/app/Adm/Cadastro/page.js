@@ -1,8 +1,5 @@
+"use client";
 import Card from "@/app/Components/Card";
-
-export const metadata = {
-  title: "Principal | VinhoBr Outlet",
-};
 
 export default function Principal() {
   return (
