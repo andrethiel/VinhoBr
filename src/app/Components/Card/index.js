@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export default function Card({
   tipo,
   texto,
@@ -89,7 +91,7 @@ export default function Card({
   }
   if (tipo == "adm") {
     return (
-      <a href={href}>
+      <Link href={href}>
         <div
           className="rounded-lg bg-gray-600 flex flex-col items-center justify-center lg:w-80"
           // style={{ width: "348px", height: "428px" }}
@@ -109,7 +111,7 @@ export default function Card({
             </h5>
           </div>
         </div>
-      </a>
+      </Link>
     );
   }
 

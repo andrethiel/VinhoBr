@@ -7,6 +7,7 @@ import { Suspense, useState } from "react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import Head from "next/head";
 import Loading from "../Components/Loading";
+import Link from "next/link";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -58,36 +59,36 @@ export default function RootLayout({ children }) {
             >
               <ul className="font-medium flex flex-col p-4 md:p-0 mt-4 border-2 lg:bg-white md:bg-white border-gray-600 bg-gray-600 rounded-lg md:flex-row md:space-x-8 md:mt-0 md:border-0">
                 <li>
-                  <a
+                  <Link
                     href="/"
                     className="block py-2 pl-3 pr-4 rounded md:bg-transparent md:p-0 text-white md:text-zinc-950 lg:text-zinc-950"
                   >
                     Home
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a
+                  <Link
                     href="/Vinhos"
                     className="block py-2 pl-3 pr-4 rounded md:bg-transparent md:p-0 text-white md:text-zinc-950 lg:text-zinc-950"
                   >
                     Vinhos
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a
+                  <Link
                     href="/Degustacao"
                     className="block py-2 pl-3 pr-4 rounded md:bg-transparent md:p-0 text-white md:text-zinc-950 lg:text-zinc-950"
                   >
                     Degustação
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a
+                  <Link
                     href="/Adm/Login"
                     className="block py-2 pl-3 pr-4 rounded md:bg-transparent md:p-0 text-white md:text-zinc-950 lg:text-zinc-950"
                   >
                     Adminstração
-                  </a>
+                  </Link>
                 </li>
               </ul>
             </div>

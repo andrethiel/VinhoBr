@@ -1,9 +1,21 @@
 "use client";
-import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
-import { CKEditor } from "@ckeditor/ckeditor5-react";
+import { useEffect, useRef, useState } from "react";
 
 export default function MyEditor({ id, editorState, onChange }) {
-  return (
+  const editorRef = useRef();
+  const [editorLoaded, setEditorLoaded] = useState(false);
+  const { CKEditor, ClassicEditor } = editorRef.current || {};
+
+  useEffect(() => {
+    editorRef.current = {
+      // CKEditor: require('@ckeditor/ckeditor5-react'), // depricated in v3
+      CKEditor: require("@ckeditor/ckeditor5-react").CKEditor, // v3+
+      ClassicEditor: require("@ckeditor/ckeditor5-build-classic"),
+    };
+    setEditorLoaded(true);
+  }, []);
+
+  return editorLoaded ? (
     <div>
       <CKEditor
         data={editorState}
@@ -19,12 +31,6 @@ export default function MyEditor({ id, editorState, onChange }) {
             "bulletedList",
             "numberedList",
             "blockQuote",
-            "ckfinder",
-            "|",
-            "imageTextAlternative",
-            "imageUpload",
-            "imageStyle:full",
-            "imageStyle:side",
             "|",
             "mediaEmbed",
             "insertTable",
@@ -39,5 +45,7 @@ export default function MyEditor({ id, editorState, onChange }) {
         onChange={onChange}
       />
     </div>
+  ) : (
+    <div>Editor loading</div>
   );
 }

@@ -10,10 +10,14 @@ import TextBox from "@/app/Components/Input";
 import Dropdonw from "@/app/Components/Select";
 import cadastroForm from "@/app/Data/cadastro";
 import { useEffect, useState } from "react";
-import { redirect, useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Alerta from "@/app/Components/Alerta";
 import { Loading } from "@/app/Components/Loading";
 import Ahref from "@/app/Components/Ahref";
+
+export const metadata = {
+  title: "Lista de Vinhos",
+};
 
 export default function Vinhos() {
   const param = useSearchParams();
@@ -49,7 +53,7 @@ export default function Vinhos() {
       );
       setErrors([response.message]);
       setTimeout(() => {
-        redirect("/Adm/Listar/Vinhos");
+        router.push("/Adm/Listar/Vinhos");
       }, 3000);
     } else {
       if (valida()) {
@@ -62,7 +66,7 @@ export default function Vinhos() {
         );
         setErrors([response.message]);
         setTimeout(() => {
-          redirect("/Adm/Listar/Vinhos");
+          router.push("/Adm/Listar/Vinhos");
         }, 3000);
       }
     }
@@ -112,6 +116,7 @@ export default function Vinhos() {
     return true;
   }
 
+  const router = useRouter();
   const [paises, setPaises] = useState([]);
   const [arquivo, setArquivo] = useState(null);
   const [imagem, setImagem] = useState(null);

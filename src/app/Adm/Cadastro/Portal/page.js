@@ -6,8 +6,7 @@ import Botao from "@/app/Components/Botao";
 import MyEditor from "@/app/Components/Editor";
 import TextBox from "@/app/Components/Input";
 import { Loading } from "@/app/Components/Loading";
-import cadastroForm from "@/app/Data/cadastro";
-import { redirect, useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function Portal() {
@@ -54,7 +53,7 @@ export default function Portal() {
       );
       setErrors([response.message]);
       setTimeout(() => {
-        redirect("/Adm/Listar/Portal");
+        router.push("/Adm/Listar/Portal");
       }, 3000);
     } else {
       if (valida()) {
@@ -68,7 +67,7 @@ export default function Portal() {
         );
         setErrors([response.message]);
         setTimeout(() => {
-          redirect("/Adm/Listar/Portal");
+          router.push("/Adm/Listar/Portal");
         }, 3000);
       }
     }
@@ -99,6 +98,7 @@ export default function Portal() {
   }
 
   const param = useSearchParams();
+  const router = useRouter();
   const [id, setID] = useState(null);
   const [guid, setGuid] = useState(null);
   const [arquivoPrincipal, setArquivoPrincipal] = useState(null);

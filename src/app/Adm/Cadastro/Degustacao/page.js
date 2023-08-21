@@ -13,7 +13,7 @@ import { Loading } from "@/app/Components/Loading";
 import Dropdonw from "@/app/Components/Select";
 import cadastroForm from "@/app/Data/cadastro";
 import { useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 
 export default function Degustacao() {
   const param = useSearchParams();

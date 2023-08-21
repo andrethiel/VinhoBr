@@ -6,10 +6,12 @@ import TextBox from "@/app/Components/Input";
 import { Loading } from "@/app/Components/Loading";
 import Dropdonw from "@/app/Components/Select";
 import Tabela from "@/app/Components/Table";
-import cadastroForm from "@/app/Data/cadastro";
 import { useEffect, useState } from "react";
 
-export default function CadsatroVinhos() {
+export const metadata = {
+  title: "Lista de Vinhos",
+};
+export default function ListaVinhos() {
   useEffect(() => {
     if (dados.length == 0) {
       listar();

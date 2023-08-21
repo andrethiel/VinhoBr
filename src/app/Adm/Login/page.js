@@ -7,13 +7,13 @@ import { Loading } from "@/app/Components/Loading";
 import usuarioForm from "@/app/Data/usuario";
 import { UserCircleIcon, LockClosedIcon } from "@heroicons/react/24/outline";
 import moment from "moment/moment";
-import { redirect } from "next/dist/server/api-utils";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function Login() {
   const usuario = usuarioForm();
   const senha = usuarioForm();
-
+  const router = useRouter();
   const [salvaSenha, SetsalvaSenha] = useState(true);
   const [errors, setErrors] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -25,7 +25,7 @@ export default function Login() {
       if (data > token.ValidoAte) {
         RefreshToken();
       } else {
-        redirect("/Adm/Cadastro");
+        router.push("/Adm/Cadastro");
       }
     }
   }, []);
@@ -43,7 +43,7 @@ export default function Login() {
         );
       }
       sessionStorage.setItem("accessToken", response.accessToken);
-      redirect("/Adm/Cadastro");
+      router.push("/Adm/Cadastro");
     }
   }
 
@@ -64,7 +64,7 @@ export default function Login() {
           );
         }
         sessionStorage.setItem("accessToken", response.accessToken);
-        redirect("/Adm/Cadastro");
+        router.push("/Adm/Cadastro");
         setLoading(false);
       } else {
         setErrors([response.erros[0], "error"]);
