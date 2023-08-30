@@ -3,7 +3,7 @@ import paises from "../Constains/Paises";
 
 export const LOGIN = async (usuario, senha) => {
   const response = await axios.post(
-    "https://localhost:44389/api/v1/usuario/login",
+    "https://premiumhome-001-site1.gtempurl.com/api/v1/usuario/login",
     {
       NomeCompleto: usuario,
       Senha: senha,
@@ -15,7 +15,7 @@ export const LOGIN = async (usuario, senha) => {
 export const REFRESH_TOKEN = async () => {
   const token = JSON.parse(localStorage.getItem("accessToken"));
   const response = await axios.post(
-    "https://localhost:44389/api/v1/usuario/refresh-token",
+    "https://premiumhome-001-site1.gtempurl.com/api/v1/usuario/refresh-token",
     "",
     {
       headers: {
@@ -41,7 +41,7 @@ export const VINHO_INSERIR = async (nome, preco, pais, url, imagem) => {
   form.append("Arquivo", imagem);
 
   const response = await axios.post(
-    "https://localhost:44389/api/v1/vinhos/inserir",
+    "https://premiumhome-001-site1.gtempurl.com/api/v1/vinhos/inserir",
     form,
     {
       headers: {
@@ -55,9 +55,10 @@ export const VINHO_INSERIR = async (nome, preco, pais, url, imagem) => {
 
 export const VINHO_LISTAR_TUDO = async () => {
   const token = sessionStorage.getItem("accessToken");
-  var url = "https://localhost:44389/api/v1/vinhos/Listar";
+  var url = "https://premiumhome-001-site1.gtempurl.com/api/v1/vinhos/Listar";
   if (token == null) {
-    url = "https://localhost:44389/api/v1/vinhos/ListarPortal";
+    url =
+      "https://premiumhome-001-site1.gtempurl.com/api/v1/vinhos/ListarPortal";
   }
   const response = await axios.get(url, {
     headers: {
@@ -71,7 +72,8 @@ export const VINHO_LISTAR_TUDO = async () => {
 export const VINHO_BUSCAR_GUID = async (guid) => {
   const token = sessionStorage.getItem("accessToken");
   const response = await axios.get(
-    "https://localhost:44389/api/v1/vinhos/BuscarPorGuid?Guid=" + guid,
+    "https://premiumhome-001-site1.gtempurl.com/api/v1/vinhos/BuscarPorGuid?Guid=" +
+      guid,
     {
       headers: {
         Authorization: "Bearer " + token,
@@ -107,7 +109,7 @@ export const EDITAR_VINHO = async (
   form.append("Arquivo", imagem);
 
   const response = await axios.post(
-    "https://localhost:44389/api/v1/vinhos/Editar",
+    "https://premiumhome-001-site1.gtempurl.com/api/v1/vinhos/Editar",
     form,
     {
       headers: {
@@ -122,7 +124,7 @@ export const EDITAR_VINHO = async (
 export const VINHO_FILTRAR = async (nome, pais) => {
   const token = sessionStorage.getItem("accessToken");
   const response = await axios.post(
-    "https://localhost:44389/api/v1/vinhos/BuscarVinho",
+    "https://premiumhome-001-site1.gtempurl.com/api/v1/vinhos/BuscarVinho",
     {
       NomeVinho: nome,
       Pais: pais,
@@ -139,7 +141,8 @@ export const VINHO_FILTRAR = async (nome, pais) => {
 
 export async function VINHO_POR_PAIS(pais) {
   const response = await axios.get(
-    "https://localhost:44389/api/v1/vinhos/ListarPorPais?Pais=" + pais
+    "https://premiumhome-001-site1.gtempurl.com/api/v1/vinhos/ListarPorPais?Pais=" +
+      pais
   );
 
   return response.data;
@@ -147,7 +150,7 @@ export async function VINHO_POR_PAIS(pais) {
 
 export async function PAISES_LISTAR() {
   const response = await axios.get(
-    "https://localhost:44389/api/v1/paises/listar"
+    "https://premiumhome-001-site1.gtempurl.com/api/v1/paises/listar"
   );
 
   return response.data;
@@ -169,7 +172,7 @@ export async function DEGUSTACAO_INSERIR(vinho, valor25, valor50, valor125) {
   }
   const token = sessionStorage.getItem("accessToken");
   const response = await axios.post(
-    "https://localhost:44389/api/v1/degustacao/inserir",
+    "https://premiumhome-001-site1.gtempurl.com/api/v1/degustacao/inserir",
     {
       VinhoId: vinho,
       Valor25: preco25 != "" ? parseFloat(preco25) : valor25,
@@ -208,7 +211,7 @@ export async function DEGUSTACAO_EDITAR(
   }
   const token = sessionStorage.getItem("accessToken");
   const response = await axios.post(
-    "https://localhost:44389/api/v1/degustacao/inserir",
+    "https://premiumhome-001-site1.gtempurl.com/api/v1/degustacao/inserir",
     {
       id: id,
       guid: guid,
@@ -229,7 +232,7 @@ export async function DEGUSTACAO_EDITAR(
 export async function DEGUSTACAO_LISTAR() {
   const token = sessionStorage.getItem("accessToken");
   const response = await axios.get(
-    "https://localhost:44389/api/v1/degustacao/listar",
+    "https://premiumhome-001-site1.gtempurl.com/api/v1/degustacao/listar",
     {
       headers: {
         Authorization: "Bearer " + token,
@@ -243,7 +246,8 @@ export async function DEGUSTACAO_LISTAR() {
 export const DEGUSTACAO_BUSCAR_GUID = async (guid) => {
   const token = sessionStorage.getItem("accessToken");
   const response = await axios.get(
-    "https://localhost:44389/api/v1/degustacao/BuscarGuid?Guid=" + guid,
+    "https://premiumhome-001-site1.gtempurl.com/api/v1/degustacao/BuscarGuid?Guid=" +
+      guid,
     {
       headers: {
         Authorization: "Bearer " + token,
@@ -256,7 +260,7 @@ export const DEGUSTACAO_BUSCAR_GUID = async (guid) => {
 
 export async function DEGUSTACAO_LISTAR_PORTAL() {
   const response = await axios.get(
-    "https://localhost:44389/api/v1/degustacao/listarPortal"
+    "https://premiumhome-001-site1.gtempurl.com/api/v1/degustacao/listarPortal"
   );
 
   return response.data;
@@ -265,7 +269,7 @@ export async function DEGUSTACAO_LISTAR_PORTAL() {
 export async function PORTAL_LISTAR() {
   const token = sessionStorage.getItem("accessToken");
   const response = await axios.get(
-    "https://localhost:44389/api/v1/portal/listar",
+    "https://premiumhome-001-site1.gtempurl.com/api/v1/portal/listar",
     {
       headers: {
         Authorization: "Bearer " + token,
@@ -279,7 +283,8 @@ export async function PORTAL_LISTAR() {
 export async function PORTAL_BUSCAR_GUID(guid) {
   const token = sessionStorage.getItem("accessToken");
   const response = await axios.get(
-    "https://localhost:44389/api/v1/portal/BuscarGuid?Guid=" + guid,
+    "https://premiumhome-001-site1.gtempurl.com/api/v1/portal/BuscarGuid?Guid=" +
+      guid,
     {
       headers: {
         Authorization: "Bearer " + token,
@@ -308,7 +313,7 @@ export async function PORTAL_INSERIR(
 
   const token = sessionStorage.getItem("accessToken");
   const response = await axios.post(
-    "https://localhost:44389/api/v1/portal/inserir",
+    "https://premiumhome-001-site1.gtempurl.com/api/v1/portal/inserir",
     form,
     {
       headers: {
@@ -349,7 +354,7 @@ export async function PORTAL_EDITAR(
 
   const token = sessionStorage.getItem("accessToken");
   const response = await axios.post(
-    "https://localhost:44389/api/v1/portal/editar",
+    "https://premiumhome-001-site1.gtempurl.com/api/v1/portal/editar",
     form,
     {
       headers: {
@@ -363,7 +368,7 @@ export async function PORTAL_EDITAR(
 
 export async function PORTAL_LISTAR_PORTAL() {
   const response = await axios.get(
-    "https://localhost:44389/api/v1/portal/listarportal"
+    "https://premiumhome-001-site1.gtempurl.com/api/v1/portal/listarportal"
   );
 
   return response.data;
@@ -372,7 +377,7 @@ export async function PORTAL_LISTAR_PORTAL() {
 export async function USUARIOS_LISTAR() {
   const token = sessionStorage.getItem("accessToken");
   const response = await axios.get(
-    "https://localhost:44389/api/v1/usuario/listar",
+    "https://premiumhome-001-site1.gtempurl.com/api/v1/usuario/listar",
     {
       headers: {
         Authorization: "Bearer " + token,
@@ -385,7 +390,7 @@ export async function USUARIOS_LISTAR() {
 
 export async function USUARIOS_AUTORIZACAO() {
   const response = await axios.get(
-    "https://localhost:44389/api/v1/usuario/roles"
+    "https://premiumhome-001-site1.gtempurl.com/api/v1/usuario/roles"
   );
 
   return response.data;
@@ -394,7 +399,7 @@ export async function USUARIOS_AUTORIZACAO() {
 export async function USUARIOS_INSERIR(nome, email, senha, tipo) {
   const token = sessionStorage.getItem("accessToken");
   const response = await axios.post(
-    "https://localhost:44389/api/v1/usuario/criarusuario",
+    "https://premiumhome-001-site1.gtempurl.com/api/v1/usuario/criarusuario",
     {
       NomeCompleto: nome,
       Email: email,
@@ -414,7 +419,7 @@ export async function USUARIOS_INSERIR(nome, email, senha, tipo) {
 export async function USUARIOS_NOVASENHA(senha) {
   const token = sessionStorage.getItem("accessToken");
   const response = await axios.post(
-    "https://localhost:44389/api/v1/usuario/NovaSenha",
+    "https://premiumhome-001-site1.gtempurl.com/api/v1/usuario/NovaSenha",
     {
       Senha: senha,
     },
@@ -430,7 +435,7 @@ export async function USUARIOS_NOVASENHA(senha) {
 
 export async function USUARIOS_RESETSENHA(nome, email) {
   const response = await axios.post(
-    "https://localhost:44389/api/v1/usuario/ResetSenha",
+    "https://premiumhome-001-site1.gtempurl.com/api/v1/usuario/ResetSenha",
     {
       NomeCompleto: nome,
       Email: email,
