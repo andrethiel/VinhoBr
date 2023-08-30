@@ -5,6 +5,7 @@ export default function Dropdonw({
   error,
   paises,
   dados,
+  roles,
   ...res
 }) {
   return (
@@ -20,6 +21,13 @@ export default function Dropdonw({
           <option value="">Selecione um vinho</option>
           {dados.map((item) => (
             <option value={item.id}>{item.nomeVinho}</option>
+          ))}
+        </>
+      ) : roles != null ? (
+        <>
+          <option value="">Selecione um tipo de usuário</option>
+          {roles.map((item) => (
+            <option value={item.id}>{item.name}</option>
           ))}
         </>
       ) : (

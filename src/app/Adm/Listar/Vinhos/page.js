@@ -13,16 +13,17 @@ export default function ListaVinhos() {
     if (dados.length == 0) {
       listar();
     }
-    async function listar() {
-      setLoading(true);
-      const response = await VINHO_LISTAR_TUDO();
-      if (response.sucesso) {
-        setDados(response.dados);
-        setPaises(response.paises);
-      }
-      setLoading(false);
-    }
   }, []);
+
+  async function listar() {
+    setLoading(true);
+    const response = await VINHO_LISTAR_TUDO();
+    if (response.sucesso) {
+      setDados(response.dados);
+      setPaises(response.paises);
+    }
+    setLoading(false);
+  }
   const titulo = ["Nome Vinho", "Preço", "Pais"];
   const [dados, setDados] = useState([]);
   const [paises, setPaises] = useState([]);

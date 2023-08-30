@@ -90,7 +90,7 @@ export default function Tabela({ titulo, body, itemsPerPage, onClick }) {
                   </a>
                 </th>
               </tr>
-            ) : (
+            ) : typeof item.imagemPrincipal != "undefined" ? (
               <tr className="border-b">
                 <th scope="row" className="px-6 py-4">
                   <div className="w-16">
@@ -148,6 +148,28 @@ export default function Tabela({ titulo, body, itemsPerPage, onClick }) {
                       Editar
                     </a>
                   )}
+                </th>
+              </tr>
+            ) : (
+              <tr className="border-b">
+                <th scope="row" className="px-6 py-4">
+                  <span>{item.userName}</span>
+                </th>
+                <th scope="row" className="px-6 py-4">
+                  <span>{item.email}</span>
+                </th>
+                <th scope="row" className="px-6 py-4">
+                  <span>
+                    {item.lockoutEnabled == true ? "Bloqueado" : "Desbloqueado"}
+                  </span>
+                </th>
+                <th>
+                  <a
+                    href={`/Adm/Cadastro/Usuario?Guid=${item.guid}`}
+                    className="text-white font-medium rounded-lg text-md w-full sm:w-auto px-5 py-2.5 text-center border-[#d7006e] bg-[#d7006e]"
+                  >
+                    Editar
+                  </a>
                 </th>
               </tr>
             )

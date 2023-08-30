@@ -5,6 +5,10 @@ import { Loading } from "../Components/Loading";
 import "./style.css";
 import Link from "next/link";
 
+export const metadata = {
+  title: "VinhoBr Outlet",
+};
+
 export default function Home() {
   useEffect(() => {
     listar();
