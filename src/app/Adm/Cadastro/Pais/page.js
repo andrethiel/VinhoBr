@@ -30,6 +30,7 @@ export default function Paises() {
   async function inserir() {
     if (nome.valida() && sigla.valida()) {
       setLoading(true);
+
       if (id.value == "") {
         const response = await PAISES_INSERIR(nome.value, sigla.value);
         if (response.sucesso) {

@@ -22,7 +22,6 @@ export default function Vinhos() {
   async function Listar() {
     setLoading(true);
     const response = await VINHO_LISTAR_TUDO();
-
     if (response.sucesso) {
       setDados(response.dados);
       setPaises(response.paises);
@@ -75,7 +74,7 @@ export default function Vinhos() {
             {paises.map((item) => (
               <Card
                 tipo="Paises"
-                image={item.sigra}
+                image={item.sigla}
                 texto={item.nome}
                 onClick={() => ListarPorPais(item.id)}
               />

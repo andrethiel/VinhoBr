@@ -56,19 +56,23 @@ export const VINHO_INSERIR = async (nome, preco, pais, url, imagem) => {
 
 export const VINHO_LISTAR_TUDO = async () => {
   const token = sessionStorage.getItem("accessToken");
-  var url = "https://premiumhome-001-site1.gtempurl.com/api/v1/vinhos/Listar";
   if (token == null) {
-    url =
-      "https://premiumhome-001-site1.gtempurl.com/api/v1/vinhos/ListarPortal";
-  }
-  if (await Validate()) {
-    const response = await axios.get(url, {
-      headers: {
-        Authorization: "Bearer " + token,
-      },
-    });
-
+    const response = await axios.get(
+      "https://premiumhome-001-site1.gtempurl.com/api/v1/vinhos/ListarPortal"
+    );
     return response.data;
+  } else {
+    if (await Validate()) {
+      const response = await axios.get(
+        "https://premiumhome-001-site1.gtempurl.com/api/v1/vinhos/Listar",
+        {
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+      return response.data;
+    }
   }
 };
 
@@ -205,7 +209,7 @@ export async function PAISES_EDITAR(id, pais, sigla) {
     {
       id: id,
       nome: pais,
-      sigla: sigla.toUpperCase(),
+      sigla: sigla.toLowerCase(),
     },
     {
       headers: {
@@ -223,7 +227,7 @@ export async function PAISES_INSERIR(pais, sigla) {
     "https://premiumhome-001-site1.gtempurl.com/api/v1/paises/inserir",
     {
       nome: pais,
-      sigla: sigla.toUpperCase(),
+      sigla: sigla.toLowerCase(),
     },
     {
       headers: {

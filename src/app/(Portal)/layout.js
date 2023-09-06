@@ -19,7 +19,6 @@ export default function RootLayout({ children }) {
 
   async function listar() {
     const response = await PORTAL_LISTAR_PORTAL(true);
-    console.log(response);
     if (response.sucesso) {
       setImage(response.dados.imagemPrincipal);
     }
