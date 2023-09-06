@@ -37,6 +37,7 @@ export default function Degustacao() {
   }
 
   async function inserir() {
+    console.log(vinhoId.value);
     if (
       validar() &&
       valor25.valida() &&
@@ -48,7 +49,7 @@ export default function Degustacao() {
         const response = await DEGUSTACAO_EDITAR(
           id.value,
           guid.value,
-          vinhoId,
+          vinhoId.value,
           valor25.value,
           valor50.value,
           valor125.value
@@ -58,7 +59,7 @@ export default function Degustacao() {
         }
       } else {
         const response = await DEGUSTACAO_INSERIR(
-          vinhoId,
+          vinhoId.value,
           valor25.value,
           valor50.value,
           valor125.value
@@ -80,7 +81,7 @@ export default function Degustacao() {
     if (response.sucesso) {
       id.setValue(response.dados.id);
       guid.setValue(response.dados.guid);
-      setVinhoId(response.dados.vinhosId);
+      vinhoId.setValue(response.dados.vinhosId);
       valor25.setValue(
         response.dados.valor25.toLocaleString("pt-br", {
           style: "currency",
@@ -104,7 +105,7 @@ export default function Degustacao() {
   }
 
   function validar() {
-    if (vinhoId == 0) {
+    if (vinhoId.value == "") {
       setErros(["Selecione o vinho", "error"]);
       return false;
     }
@@ -114,12 +115,13 @@ export default function Degustacao() {
 
   const [dados, setDados] = useState([]);
   const [errors, setErros] = useState([]);
-  const [vinhoId, setVinhoId] = useState(0);
+  // const [vinhoId, setVinhoId] = useState(0);
   const id = cadastroForm();
   const guid = cadastroForm();
   const valor25 = cadastroForm();
   const valor50 = cadastroForm();
   const valor125 = cadastroForm();
+  const vinhoId = cadastroForm();
 
   const [loading, setLoading] = useState(false);
 
@@ -140,11 +142,7 @@ export default function Degustacao() {
         {errors.length > 0 && <Alerta type={errors[1]}>{errors[0]}</Alerta>}
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 mt-10 mb-10 gap-5">
-        <Dropdonw
-          value={vinhoId}
-          onChange={(e) => setVinhoId(e.target.value)}
-          dados={dados}
-        />
+        <Dropdonw dados={dados} {...vinhoId} />
         <TextBox placeholder="Valor 25ml" {...valor25} />
         <TextBox placeholder="Valor 50ml" {...valor50} />
         <TextBox placeholder="Valor 125ml" {...valor125} />

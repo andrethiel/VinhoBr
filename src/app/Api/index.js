@@ -1,5 +1,6 @@
 import axios from "axios";
 import paises from "../Constains/Paises";
+import moment from "moment";
 
 export const LOGIN = async (usuario, senha) => {
   const response = await axios.post(
@@ -28,8 +29,8 @@ export const REFRESH_TOKEN = async () => {
 
 export const VINHO_INSERIR = async (nome, preco, pais, url, imagem) => {
   var valor = "";
-  if (preco.toString().includes(",")) {
-    valor = preco.replace(",", ".").replace("R$", "");
+  if (preco.toString().includes(".")) {
+    valor = preco.replace(".", ",").replace("R$", "");
   }
   const token = sessionStorage.getItem("accessToken");
 
@@ -60,13 +61,15 @@ export const VINHO_LISTAR_TUDO = async () => {
     url =
       "https://premiumhome-001-site1.gtempurl.com/api/v1/vinhos/ListarPortal";
   }
-  const response = await axios.get(url, {
-    headers: {
-      Authorization: "Bearer " + token,
-    },
-  });
+  if (await Validate()) {
+    const response = await axios.get(url, {
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    });
 
-  return response.data;
+    return response.data;
+  }
 };
 
 export const VINHO_BUSCAR_GUID = async (guid) => {
@@ -84,6 +87,25 @@ export const VINHO_BUSCAR_GUID = async (guid) => {
   return response.data;
 };
 
+export async function VINHO_EXCLUIR(id) {
+  if (Validate()) {
+    const token = sessionStorage.getItem("accessToken");
+    const response = await axios.post(
+      "https://premiumhome-001-site1.gtempurl.com/api/v1/vinhos/excluir",
+      {
+        id: id,
+      },
+      {
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      }
+    );
+
+    return response.data;
+  }
+}
+
 export const EDITAR_VINHO = async (
   id,
   guid,
@@ -94,16 +116,20 @@ export const EDITAR_VINHO = async (
   imagem
 ) => {
   var valor = "";
-  if (preco.toString().includes(",")) {
-    valor = preco.replace(",", ".").replace("R$", "");
+  if (preco.toString().includes(".")) {
+    valor = preco.replace(".", ",").replace("R$", "");
   }
+  console.log(parseFloat(valor));
   const token = sessionStorage.getItem("accessToken");
 
   const form = new FormData();
   form.append("Id", id);
   form.append("Guid", guid);
   form.append("NomeVinho", nome);
-  form.append("Preco", valor != "" ? parseFloat(valor) : preco);
+  form.append(
+    "Preco",
+    valor != "" ? parseFloat(valor) : preco.replace("R$", "")
+  );
   form.append("PaisId", pais);
   form.append("UrlImagem", url);
   form.append("Arquivo", imagem);
@@ -122,21 +148,23 @@ export const EDITAR_VINHO = async (
 };
 
 export const VINHO_FILTRAR = async (nome, pais) => {
-  const token = sessionStorage.getItem("accessToken");
-  const response = await axios.post(
-    "https://premiumhome-001-site1.gtempurl.com/api/v1/vinhos/BuscarVinho",
-    {
-      NomeVinho: nome,
-      Pais: pais,
-    },
-    {
-      headers: {
-        Authorization: "Bearer " + token,
+  if (await Validate()) {
+    const token = sessionStorage.getItem("accessToken");
+    const response = await axios.post(
+      "https://premiumhome-001-site1.gtempurl.com/api/v1/vinhos/BuscarVinho",
+      {
+        NomeVinho: nome,
+        Pais: pais,
       },
-    }
-  );
+      {
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      }
+    );
 
-  return response.data;
+    return response.data;
+  }
 };
 
 export async function VINHO_POR_PAIS(pais) {
@@ -154,6 +182,76 @@ export async function PAISES_LISTAR() {
   );
 
   return response.data;
+}
+
+export async function PAISES_BUSCAR(id) {
+  const token = sessionStorage.getItem("accessToken");
+  const response = await axios.get(
+    "https://premiumhome-001-site1.gtempurl.com/api/v1/paises/buscar?Id=" + id,
+    {
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    }
+  );
+
+  return response.data;
+}
+
+export async function PAISES_EDITAR(id, pais, sigla) {
+  const token = sessionStorage.getItem("accessToken");
+  const response = await axios.post(
+    "https://premiumhome-001-site1.gtempurl.com/api/v1/paises/editar",
+    {
+      id: id,
+      nome: pais,
+      sigla: sigla.toUpperCase(),
+    },
+    {
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    }
+  );
+
+  return response.data;
+}
+
+export async function PAISES_INSERIR(pais, sigla) {
+  const token = sessionStorage.getItem("accessToken");
+  const response = await axios.post(
+    "https://premiumhome-001-site1.gtempurl.com/api/v1/paises/inserir",
+    {
+      nome: pais,
+      sigla: sigla.toUpperCase(),
+    },
+    {
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    }
+  );
+
+  return response.data;
+}
+
+export async function PAISES_EXCLUIR(id) {
+  if (Validate()) {
+    const token = sessionStorage.getItem("accessToken");
+    const response = await axios.post(
+      "https://premiumhome-001-site1.gtempurl.com/api/v1/paises/excluir",
+      {
+        id: id,
+      },
+      {
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      }
+    );
+
+    return response.data;
+  }
 }
 
 export async function DEGUSTACAO_INSERIR(vinho, valor25, valor50, valor125) {
@@ -174,7 +272,7 @@ export async function DEGUSTACAO_INSERIR(vinho, valor25, valor50, valor125) {
   const response = await axios.post(
     "https://premiumhome-001-site1.gtempurl.com/api/v1/degustacao/inserir",
     {
-      VinhoId: vinho,
+      VinhosId: vinho,
       Valor25: preco25 != "" ? parseFloat(preco25) : valor25,
       Valor50: preco50 != "" ? parseFloat(preco50) : valor50,
       Valor125: preco125 != "" ? parseFloat(preco125) : valor125,
@@ -215,7 +313,7 @@ export async function DEGUSTACAO_EDITAR(
     {
       id: id,
       guid: guid,
-      VinhoId: vinho,
+      VinhosId: vinho,
       Valor25: parseFloat(preco25),
       Valor50: parseFloat(preco50),
       Valor125: parseFloat(preco125),
@@ -233,6 +331,21 @@ export async function DEGUSTACAO_LISTAR() {
   const token = sessionStorage.getItem("accessToken");
   const response = await axios.get(
     "https://premiumhome-001-site1.gtempurl.com/api/v1/degustacao/listar",
+    {
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    }
+  );
+
+  return response.data;
+}
+
+export async function DEGUSTACAO_EXLUIR(guid) {
+  const token = sessionStorage.getItem("accessToken");
+  const response = await axios.post(
+    "https://premiumhome-001-site1.gtempurl.com/api/v1/degustacao/Excluir?guid=" +
+      guid,
     {
       headers: {
         Authorization: "Bearer " + token,
@@ -267,17 +380,19 @@ export async function DEGUSTACAO_LISTAR_PORTAL() {
 }
 
 export async function PORTAL_LISTAR() {
-  const token = sessionStorage.getItem("accessToken");
-  const response = await axios.get(
-    "https://premiumhome-001-site1.gtempurl.com/api/v1/portal/listar",
-    {
-      headers: {
-        Authorization: "Bearer " + token,
-      },
-    }
-  );
+  if (await Validate()) {
+    const token = sessionStorage.getItem("accessToken");
+    const response = await axios.get(
+      "https://premiumhome-001-site1.gtempurl.com/api/v1/portal/listar",
+      {
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      }
+    );
 
-  return response.data;
+    return response.data;
+  }
 }
 
 export async function PORTAL_BUSCAR_GUID(guid) {
@@ -293,6 +408,25 @@ export async function PORTAL_BUSCAR_GUID(guid) {
   );
 
   return response.data;
+}
+
+export async function PORTAL_EXCLUIR(id) {
+  if (await Validate()) {
+    const token = sessionStorage.getItem("accessToken");
+    const response = await axios.post(
+      "https://premiumhome-001-site1.gtempurl.com/api/v1/portal/excluir",
+      {
+        id: id,
+      },
+      {
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      }
+    );
+
+    return response.data;
+  }
 }
 
 export async function PORTAL_INSERIR(
@@ -312,17 +446,19 @@ export async function PORTAL_INSERIR(
   form.append("ativo", true);
 
   const token = sessionStorage.getItem("accessToken");
-  const response = await axios.post(
-    "https://premiumhome-001-site1.gtempurl.com/api/v1/portal/inserir",
-    form,
-    {
-      headers: {
-        Authorization: "Bearer " + token,
-        "Content-Type": "multipart/form-data",
-      },
-    }
-  );
-  return response.data;
+  if (await Validate()) {
+    const response = await axios.post(
+      "https://premiumhome-001-site1.gtempurl.com/api/v1/portal/inserir",
+      form,
+      {
+        headers: {
+          Authorization: "Bearer " + token,
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
+    return response.data;
+  }
 }
 
 export async function PORTAL_EDITAR(
@@ -366,9 +502,11 @@ export async function PORTAL_EDITAR(
   return response.data;
 }
 
-export async function PORTAL_LISTAR_PORTAL() {
+export async function PORTAL_LISTAR_PORTAL(principal) {
+  console.log(principal);
   const response = await axios.get(
-    "https://premiumhome-001-site1.gtempurl.com/api/v1/portal/listarportal"
+    "https://premiumhome-001-site1.gtempurl.com/api/v1/portal/listarportal?principal=" +
+      principal
   );
 
   return response.data;
@@ -443,4 +581,157 @@ export async function USUARIOS_RESETSENHA(nome, email) {
   );
 
   return response.data;
+}
+
+export async function USUARIOS_BUSCAR(id) {
+  const token = sessionStorage.getItem("accessToken");
+  const response = await axios.post(
+    "https://premiumhome-001-site1.gtempurl.com/api/v1/usuario/BuscarUsuario",
+    {
+      Id: id,
+    },
+    {
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    }
+  );
+
+  return response.data;
+}
+
+export async function USUARIOS_EDITAR(id, nome, email) {
+  const token = sessionStorage.getItem("accessToken");
+  const response = await axios.post(
+    "https://premiumhome-001-site1.gtempurl.com/api/v1/usuario/editarusuario",
+    {
+      Id: id,
+      NomeCompleto: nome,
+      Email: email,
+    },
+    {
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    }
+  );
+
+  return response.data;
+}
+
+export async function USUARIOS_EDITAR_PERMISSOES(id, role) {
+  const token = sessionStorage.getItem("accessToken");
+  const response = await axios.post(
+    "https://premiumhome-001-site1.gtempurl.com/api/v1/usuario/AtualizaRole",
+    {
+      Id: id,
+      role: role,
+    },
+    {
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    }
+  );
+
+  return response.data;
+}
+
+export async function USUARIOS_BUSCAR_PERMISSOES(id) {
+  const token = sessionStorage.getItem("accessToken");
+  const response = await axios.post(
+    "https://premiumhome-001-site1.gtempurl.com/api/v1/usuario/roleusuario",
+    {
+      Id: id,
+    },
+    {
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    }
+  );
+
+  return response.data;
+}
+
+export async function USUARIOS_RESETSENHA_ADM(id) {
+  if (await Validate()) {
+    const token = sessionStorage.getItem("accessToken");
+    const response = await axios.get(
+      `https://premiumhome-001-site1.gtempurl.com/api/v1/usuario/ResetSenha?Id=${id}`,
+      {
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      }
+    );
+    return response.data;
+  }
+}
+
+export async function USUARIOS_ALTERAR_SENHA(senha, nova) {
+  if (await Validate()) {
+    const token = sessionStorage.getItem("accessToken");
+    const response = await axios.post(
+      "https://premiumhome-001-site1.gtempurl.com/api/v1/usuario/editarsenha",
+      {
+        Senha: nova,
+        SenhaAntiga: senha,
+      },
+      {
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      }
+    );
+    return response.data;
+  }
+}
+
+// export async function PAISES_INSERIR() {
+//   if (await Validate()) {
+//     const token = sessionStorage.getItem("accessToken");
+//     const response = await axios.get(
+//       "https://premiumhome-001-site1.gtempurl.com/api/v1/usuario/editarsenha",
+//       {
+//         Senha: nova,
+//         SenhaAntiga: senha,
+//       },
+//       {
+//         headers: {
+//           Authorization: "Bearer " + token,
+//         },
+//       }
+//     );
+//     return response.data;
+//   }
+// }
+
+async function Validate() {
+  if (localStorage.getItem("accessToken") !== null) {
+    const token = JSON.parse(localStorage.getItem("accessToken"));
+    const data = moment(new Date()).format("DD/MM/YYYY HH:mm");
+    if (data > token.ValidoAte) {
+      const response = await REFRESH_TOKEN();
+      if (response.sucesso) {
+        localStorage.clear();
+        sessionStorage.clear();
+        localStorage.setItem(
+          "accessToken",
+          JSON.stringify({
+            ValidoAte: response.validoAte,
+            accessToken: response.refreshToken,
+          })
+        );
+        sessionStorage.setItem("accessToken", response.accessToken);
+        localStorage.setItem("nome", response.nome);
+        return true;
+      } else {
+        router.push("/Adm/Cadastro");
+        return false;
+      }
+    } else {
+      return true;
+    }
+  }
 }

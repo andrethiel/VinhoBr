@@ -1,6 +1,7 @@
 "use client";
-import { VINHO_FILTRAR, VINHO_LISTAR_TUDO } from "@/app/Api";
+import { VINHO_EXCLUIR, VINHO_FILTRAR, VINHO_LISTAR_TUDO } from "@/app/Api";
 import Ahref from "@/app/Components/Ahref";
+import Alerta from "@/app/Components/Alerta";
 import Botao from "@/app/Components/Botao";
 import TextBox from "@/app/Components/Input";
 import { Loading } from "@/app/Components/Loading";
@@ -29,12 +30,25 @@ export default function ListaVinhos() {
   const [paises, setPaises] = useState([]);
   const [nome, setNome] = useState(null);
   const [pais, setPais] = useState(null);
+  const [errors, setErrors] = useState([]);
 
   async function Pesquisar() {
     setLoading(true);
     const response = await VINHO_FILTRAR(nome, pais);
     if (response.sucesso) {
       setDados(response.dados);
+    }
+    setLoading(false);
+  }
+
+  async function Exluir(id) {
+    setLoading(true);
+    const response = await VINHO_EXCLUIR(id);
+    if (response.sucesso) {
+      setErrors([response.message]);
+    } else {
+      setErrors([response.message, "error"]);
+      listar();
     }
     setLoading(false);
   }
@@ -65,12 +79,18 @@ export default function ListaVinhos() {
       <div className="mt-10">
         <div className="flex flex-col gap-2 md:flex-row md:justify-between lg:flex-row :lgjustify-between xl:flex-row xl:justify-between">
           <span className="text-2xl">Lista de Vinhos</span>
-          <Ahref link={"/Adm/Cadastro/Vinhos"}>Cadastrar degustação</Ahref>
+          <Ahref link={"/Adm/Cadastro/Vinhos"}>Cadastrar Vinho</Ahref>
         </div>
       </div>
+      {errors.length > 0 && <Alerta type={errors[1]}>{errors[0]}</Alerta>}
       {dados.length > 0 ? (
         <div className="mt-5">
-          <Tabela titulo={titulo} body={dados} itemsPerPage={10} />
+          <Tabela
+            titulo={titulo}
+            body={dados}
+            itemsPerPage={10}
+            onClick={Exluir}
+          />
         </div>
       ) : (
         <span className="text-2xl">Nenhum dado encontrado</span>

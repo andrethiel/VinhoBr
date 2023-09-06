@@ -1,5 +1,9 @@
 "use client";
-import { USUARIOS_AUTORIZACAO, USUARIOS_INSERIR } from "@/app/Api";
+import {
+  USUARIOS_AUTORIZACAO,
+  USUARIOS_BUSCAR,
+  USUARIOS_INSERIR,
+} from "@/app/Api";
 import Ahref from "@/app/Components/Ahref";
 import Alerta from "@/app/Components/Alerta";
 import Botao from "@/app/Components/Botao";
@@ -12,9 +16,6 @@ import { useEffect, useState } from "react";
 
 export default function CadastroUsuario() {
   useEffect(() => {
-    if (param.get("Guid") != null) {
-      BuscarGuid();
-    }
     listar();
   }, []);
 
@@ -105,7 +106,7 @@ export default function CadastroUsuario() {
         <Botao onClick={Inserir}>
           {param.get("Guid") != null ? "Editar" : "Cadastrar"}
         </Botao>
-        <Ahref link={"/Adm/Listar/Usuario"}>Voltar</Ahref>
+        <Ahref link={"/Adm/Listar/Usuarios"}>Voltar</Ahref>
       </div>
     </div>
   );

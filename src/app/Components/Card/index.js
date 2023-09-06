@@ -1,3 +1,4 @@
+import { UsersIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 
 export default function Card({
@@ -6,6 +7,7 @@ export default function Card({
   href,
   image,
   preco,
+  icon,
   valor25,
   valor50,
   valor125,
@@ -97,12 +99,16 @@ export default function Card({
           // style={{ width: "348px", height: "428px" }}
         >
           <div className="flex items-center justify-center">
-            <img
-              src={image}
-              alt=""
-              width={`${texto != "Portal" ? "150px" : "200px"}`}
-              style={{ height: "250px" }}
-            />
+            {typeof image != "undefined" ? (
+              <img
+                src={image}
+                alt=""
+                width={`${texto != "Portal" ? "150px" : "200px"}`}
+                style={{ height: "250px" }}
+              />
+            ) : (
+              icon
+            )}
           </div>
 
           <div className="px-5 pb-5 py-5 flex items-center">

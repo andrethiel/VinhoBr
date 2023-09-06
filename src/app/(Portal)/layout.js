@@ -1,17 +1,29 @@
 "use client";
 import "../globals.css";
 import { Inter } from "next/font/google";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
-import Header from "../Components/Header";
+import Footer from "../Components/Footer";
+import { PORTAL_LISTAR_PORTAL } from "../Api";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export default function RootLayout({ children }) {
   const [navbar, setNavbar] = useState(false);
+  const [image, setImage] = useState("");
 
-  const data = new Date();
+  useEffect(() => {
+    listar();
+  }, []);
+
+  async function listar() {
+    const response = await PORTAL_LISTAR_PORTAL(true);
+    console.log(response);
+    if (response.sucesso) {
+      setImage(response.dados.imagemPrincipal);
+    }
+  }
 
   return (
     <html lang="br">
@@ -85,17 +97,14 @@ export default function RootLayout({ children }) {
         </nav>
         <div className="container px-6 sm:container sm:px-20 md:mx-auto md:px-20 lg:px-20 lg:mx-auto max-h-screen">
           <div className="flex justify-center items-center">
-            <img src={`./slide-home.jpg`} style={{ width: "100%" }} />
+            <img
+              src={image}
+              className="w-[1375px] rounded-lg"
+              style={{ maxHeight: "785px" }}
+            />
           </div>
           {children}
-          <footer className="max-w-screen mx-auto rounded-lg shadow mb-5 mt-10 bg-gray-600">
-            <div className="flex items-center justify-center p-4">
-              <span className="text-sm text-gray-500 sm:text-cent">
-                © {data.getFullYear()} VinhoBr™ City Center Outlet . All Rights
-                Reserved.
-              </span>
-            </div>
-          </footer>
+          <Footer />
         </div>
       </body>
     </html>

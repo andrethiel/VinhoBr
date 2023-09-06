@@ -39,15 +39,14 @@ export default function Login() {
   async function RefreshToken() {
     const response = await REFRESH_TOKEN();
     if (response.sucesso) {
-      if (salvaSenha) {
-        localStorage.setItem(
-          "accessToken",
-          JSON.stringify({
-            ValidoAte: response.validoAte,
-            accessToken: response.refreshToken,
-          })
-        );
-      }
+      localStorage.setItem(
+        "accessToken",
+        JSON.stringify({
+          ValidoAte: response.validoAte,
+          accessToken: response.refreshToken,
+          Nome: response.nome,
+        })
+      );
       sessionStorage.setItem("accessToken", response.accessToken);
       router.push("/Adm/Cadastro");
     }
@@ -60,16 +59,15 @@ export default function Login() {
       setLoading(true);
       const response = await LOGIN(usuario.value, senha.value);
       if (response.sucesso) {
-        if (salvaSenha) {
-          localStorage.setItem(
-            "accessToken",
-            JSON.stringify({
-              ValidoAte: response.validoAte,
-              accessToken: response.refreshToken,
-            })
-          );
-        }
+        localStorage.setItem(
+          "accessToken",
+          JSON.stringify({
+            ValidoAte: response.validoAte,
+            accessToken: response.refreshToken,
+          })
+        );
         sessionStorage.setItem("accessToken", response.accessToken);
+        localStorage.setItem("nome", response.nome);
         setLoading(false);
         if (senha.value == "123456") {
           setPopup(true);
@@ -77,12 +75,14 @@ export default function Login() {
           router.push("/Adm/Cadastro");
         }
       } else {
+        setLoading(false);
         setErrors([response.erros[0], "error"]);
       }
     }
   }
 
   async function MudarSenha() {
+    setErrors([]);
     if (repete.value == senha.value) {
       setErrorsModal(["A senha não pode ser igual a anterior", "error"]);
     }
