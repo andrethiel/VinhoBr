@@ -2,7 +2,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import Card from "../../Components/Card";
 import { VINHO_LISTAR_TUDO, VINHO_POR_PAIS } from "@/app/Api";
-import { motion } from "framer-motion";
 import { Loading } from "@/app/Components/Loading";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
