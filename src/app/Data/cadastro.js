@@ -20,6 +20,12 @@ const cadastroForm = (type) => {
     if (error) valida(target.value);
     setValue(target.value);
   }
+
+  function Limpar() {
+    setValue("");
+    setError(null);
+  }
+
   return {
     value,
     setValue,
@@ -27,6 +33,7 @@ const cadastroForm = (type) => {
     error,
     valida: () => valida(value),
     onBlur: () => valida(value),
+    Limpar,
   };
 };
 

@@ -23,7 +23,7 @@ export default function Card({
             src="../garrafa.svg"
           />
         </button>
-        <span>Todos os vinho</span>
+        <span className="text-center">Todos os vinho</span>
       </div>
     ) : (
       <div className="flex flex-col items-center">
@@ -34,7 +34,7 @@ export default function Card({
             src={"https://flagcdn.com/" + image + ".svg"}
           />
         </button>
-        <span>{texto}</span>
+        <span className="text-center">{texto}</span>
       </div>
     );
   }

@@ -4,7 +4,9 @@ import Card from "../../Components/Card";
 import { VINHO_LISTAR_TUDO, VINHO_POR_PAIS } from "@/app/Api";
 import { motion } from "framer-motion";
 import { Loading } from "@/app/Components/Loading";
-
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 export default function Vinhos() {
   useEffect(() => {
     Listar();
@@ -18,13 +20,41 @@ export default function Vinhos() {
   const [width, setWidth] = useState(0);
   const [dados, setDados] = useState([]);
   const [paises, setPaises] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  const settings = {
+    dots: false,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 5,
+    slidesToScroll: 5,
+    initialSlide: 0,
+    responsive: [
+      {
+        breakpoint: 480,
+        settings: {
+          slidesToShow: 4,
+          slidesToScroll: 4,
+        },
+      },
+      {
+        breakpoint: 280,
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 3,
+        },
+      },
+    ],
+  };
 
   async function Listar() {
     setLoading(true);
     const response = await VINHO_LISTAR_TUDO();
     if (response.sucesso) {
       setDados(response.dados);
-      setPaises(response.paises);
+      if (paises.length == 0) {
+        setPaises(response.paises);
+      }
     }
     setLoading(false);
   }
@@ -34,15 +64,14 @@ export default function Vinhos() {
     setDados([]);
     if (pais == 0) {
       Listar();
-    }
-    const response = await VINHO_POR_PAIS(pais);
-    if (response.sucesso) {
-      setDados(response.dados);
+    } else {
+      const response = await VINHO_POR_PAIS(pais);
+      if (response.sucesso) {
+        setDados(response.dados);
+      }
     }
     setLoading(false);
   }
-
-  const [loading, setLoading] = useState(false);
 
   if (loading) return <Loading start={true} />;
 
@@ -58,30 +87,20 @@ export default function Vinhos() {
           Esolha seus vinho por pais
         </span>
       </div>
-      <div className="flex items-center justify-center mb-5 max-w-[350px] md:max-w-[768px] lg:max-w-[1024px] xl:max-w-[1280px] ">
-        <motion.div
-          className="cursor-grab overflow-hidden"
-          whileTap={{ cursor: "grabbing" }}
-          ref={carousel}
-        >
-          <motion.div
-            style={{ display: "flex" }}
-            className="flex gap-10"
-            drag="x"
-            dragConstraints={{ right: 0, left: -width }}
-          >
-            <Card tipo="Paises" image="" onClick={() => ListarPorPais(0)} />
-            {paises.map((item) => (
-              <Card
-                tipo="Paises"
-                image={item.sigla}
-                texto={item.nome}
-                onClick={() => ListarPorPais(item.id)}
-              />
-            ))}
-          </motion.div>
-        </motion.div>
-      </div>
+      <Slider
+        {...settings}
+        className="mb-7 max-w-[350px] md:max-w-[768px] lg:max-w-[1024px] xl:max-w-[1280px]"
+      >
+        <Card tipo="Paises" image="" onClick={() => ListarPorPais(0)} />
+        {paises.map((item) => (
+          <Card
+            tipo="Paises"
+            image={item.sigla}
+            texto={item.nome}
+            onClick={() => ListarPorPais(item.id)}
+          />
+        ))}
+      </Slider>
       <div className="flex justify-center items-center pb-14">
         <span className="text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6x">
           Conheça nosso vinhos

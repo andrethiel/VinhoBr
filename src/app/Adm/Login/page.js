@@ -100,6 +100,12 @@ export default function Login() {
     }
   }
 
+  function onKeyDown(event) {
+    if (event.key == "Enter") {
+      console.log("dsdsasdasda");
+    }
+  }
+
   if (popup)
     return (
       <Modal
@@ -152,7 +158,9 @@ export default function Login() {
 
           <Link href={"/Adm/Login/Recupera"}>Esqueceu a senha?</Link>
         </div>
-        <Botao onClick={Entrar}>Entrar</Botao>
+        <Botao onClick={Entrar} onKeyDown={onKeyDown}>
+          Entrar
+        </Botao>
       </div>
     </div>
   );

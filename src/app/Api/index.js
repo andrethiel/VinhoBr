@@ -29,8 +29,8 @@ export const REFRESH_TOKEN = async () => {
 
 export const VINHO_INSERIR = async (nome, preco, pais, url, imagem) => {
   var valor = "";
-  if (preco.toString().includes(".")) {
-    valor = preco.replace(".", ",").replace("R$", "");
+  if (preco.toString().includes(",")) {
+    valor = preco.replace(",", ".").replace("R$", "");
   }
   const token = sessionStorage.getItem("accessToken");
 
@@ -120,8 +120,8 @@ export const EDITAR_VINHO = async (
   imagem
 ) => {
   var valor = "";
-  if (preco.toString().includes(".")) {
-    valor = preco.replace(".", ",").replace("R$", "");
+  if (preco.toString().includes(",")) {
+    valor = preco.replace(",", ".").replace("R$", "");
   }
   console.log(parseFloat(valor));
   const token = sessionStorage.getItem("accessToken");
